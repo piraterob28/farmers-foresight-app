@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "run-ios:mini": "react-native run-ios --simulator='iPhone 12 mini'",
+    "wipe": "rm -rf ~/Library/Developer/Xcode/DerivedData && rm -rf node_modules/ && yarn install && cd ios && rm -rf Pods && pod install && cd .."
   },
   "dependencies": {
     "react": "18.2.0",
