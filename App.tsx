@@ -6,6 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import FarmMapQuickView from './app/views/FarmMapQuickView';
 import FarmTaskListView from './app/views/FarmTaskListView';
+import ZoneView from './app/views/ZoneView';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import TabNavButton from './app/components/buttons/TabNavButton';
 import appColors from './app/styles/colors';
@@ -14,7 +15,7 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
-function TabNav(): React.JSX.Element {
+function HomeTabNav(): React.JSX.Element {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -58,9 +59,31 @@ function TabNav(): React.JSX.Element {
             <TabNavButton icon="checks" active={focused} />
           ),
         }}>
-        {props => <FarmTaskListView text={'Hello'} />}
+        {() => <FarmTaskListView text={'Hello'} />}
       </Tab.Screen>
     </Tab.Navigator>
+  );
+}
+
+const ZoneStackNavigator = (): React.JSX.Element => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Stack.Screen name="Zone View">
+        {() => <ZoneView text={'Hello'} />}
+      </Stack.Screen>
+    </Stack.Navigator>
+  );
+};
+
+function Root(): React.JSX.Element {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name="Home" component={HomeTabNav} />
+      <Drawer.Screen name="Zones" component={ZoneStackNavigator} />
+    </Drawer.Navigator>
   );
 }
 
@@ -70,8 +93,8 @@ function App(): React.JSX.Element {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
-            name="TabNav"
-            component={TabNav}
+            name="DrawerNav"
+            component={Root}
             options={{headerShown: false}}
           />
         </Stack.Navigator>
