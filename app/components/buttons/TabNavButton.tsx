@@ -1,9 +1,11 @@
 import React from 'react';
-import {TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {TouchableOpacity, Image, StyleSheet, Text} from 'react-native';
+import Eye from '../../assets/icons/Eye.svg';
+import Checks from '../../assets/icons/Checks.svg';
 
 interface TabNavButtonProps {
   props: any;
-  icon: Text;
+  icon: 'eye' | 'checks';
 }
 
 const TabNavButton: React.FC<TabNavButtonProps> = ({props, icon}) => {
@@ -16,7 +18,8 @@ const TabNavButton: React.FC<TabNavButtonProps> = ({props, icon}) => {
         left: 10,
         right: 10,
       }}>
-      <Image style={[styles.imageSize]} source={icon} />
+      {icon === 'eye' && <Eye width={25} height={25} />}
+      {icon === 'checks' && <Checks width={25} height={25} />}
     </TouchableOpacity>
   );
 };

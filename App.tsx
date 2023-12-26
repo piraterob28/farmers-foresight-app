@@ -7,6 +7,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import FarmMapQuickView from './app/views/FarmMapQuickView';
 import FarmTaskListView from './app/views/FarmTaskListView';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import TabNavButton from './app/components/buttons/TabNavButton';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -23,6 +24,7 @@ function TabNav(): React.JSX.Element {
         headerTitleStyle: {
           fontWeight: 'bold',
         },
+        tabBarButton: props => <TabNavButton props={props} icon="eye" />,
       }}>
       <Tab.Screen
         name="Quick View"
@@ -35,6 +37,7 @@ function TabNav(): React.JSX.Element {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          tabBarButton: props => <TabNavButton props={props} icon="checks" />,
         }}>
         {props => <FarmMapQuickView text={'poop'} />}
       </Tab.Screen>
