@@ -24,6 +24,7 @@ function HomeTabNav(): React.JSX.Element {
           height: 90,
           paddingBottom: 40,
         },
+        // headerShown: false,
       }}>
       <Tab.Screen
         name="Quick View"
@@ -41,7 +42,7 @@ function HomeTabNav(): React.JSX.Element {
             <TabNavButton icon="eye" active={focused} />
           ),
         }}>
-        {props => <FarmMapQuickView text={'poop'} />}
+        {() => <FarmMapQuickView text={'poop'} />}
       </Tab.Screen>
       <Tab.Screen
         name="Sale List"
@@ -68,10 +69,22 @@ function HomeTabNav(): React.JSX.Element {
 const ZoneStackNavigator = (): React.JSX.Element => {
   return (
     <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Stack.Screen name="Zone View">
+      screenOptions={
+        {
+          // headerShown: false,
+        }
+      }>
+      <Stack.Screen
+        name="Zone View"
+        options={{
+          headerStyle: {
+            backgroundColor: '#ffffff',
+          },
+          headerTintColor: appColors.darkGreen,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}>
         {() => <ZoneView text={'Hello'} />}
       </Stack.Screen>
     </Stack.Navigator>
@@ -80,7 +93,10 @@ const ZoneStackNavigator = (): React.JSX.Element => {
 
 function Root(): React.JSX.Element {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
       <Drawer.Screen name="Home" component={HomeTabNav} />
       <Drawer.Screen name="Zones" component={ZoneStackNavigator} />
     </Drawer.Navigator>
