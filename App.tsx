@@ -10,6 +10,7 @@ import ZoneView from './app/views/ZoneView';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import TabNavButton from './app/components/buttons/TabNavButton';
 import appColors from './app/styles/colors';
+import HeaderTitle from './app/components/header/HeaderTitle';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -45,9 +46,11 @@ function HomeTabNav(): React.JSX.Element {
         {() => <FarmMapQuickView text={'poop'} />}
       </Tab.Screen>
       <Tab.Screen
-        name="Sale List"
+        name="Farm List View"
         options={{
-          title: 'Sale List View',
+          headerTitle: () => (
+            <HeaderTitle text={'Farm List View'} image={'task'} />
+          ),
           headerStyle: {
             backgroundColor: '#ffffff',
           },
