@@ -11,12 +11,16 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import TabNavButton from './app/components/buttons/TabNavButton';
 import appColors from './app/styles/colors';
 import HeaderTitle from './app/components/header/HeaderTitle';
+import {StoreContext} from './app/context/store';
+import {store} from './app/stores/RootStore';
+import {useStore} from './app/hooks/useStore';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
 function HomeTabNav(): React.JSX.Element {
+  const stores = useStore();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -43,7 +47,9 @@ function HomeTabNav(): React.JSX.Element {
             <TabNavButton icon="eye" active={focused} />
           ),
         }}>
-        {() => <FarmMapQuickView text={'poop'} />}
+        {props => (
+          <FarmMapQuickView {...props} store={stores.farmMapQuickStore} />
+        )}
       </Tab.Screen>
       <Tab.Screen
         name="Farm List View"
@@ -108,17 +114,19 @@ function Root(): React.JSX.Element {
 
 function App(): React.JSX.Element {
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="DrawerNav"
-            component={Root}
-            options={{headerShown: false}}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </GestureHandlerRootView>
+    <StoreContext.Provider value={store}>
+      <GestureHandlerRootView style={{flex: 1}}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="DrawerNav"
+              component={Root}
+              options={{headerShown: false}}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </GestureHandlerRootView>
+    </StoreContext.Provider>
   );
 }
 
