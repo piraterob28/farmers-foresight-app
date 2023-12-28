@@ -3,6 +3,8 @@ import FarmMapQuickStore from '../stores/FarmMapQuickStore';
 import {observer} from 'mobx-react';
 import React from 'react';
 
+import FarmMap from '../components/farmMap/FarmMap';
+
 interface FarmMapQuickViewProps {
   navigation: object;
   route: object;
@@ -11,10 +13,9 @@ interface FarmMapQuickViewProps {
 
 const FarmMapQuickView: React.FC<FarmMapQuickViewProps> = observer(
   ({navigation, route, store}) => {
-    const text: string = store.testText;
     return (
       <View>
-        <Text>FarmMapQuickView {text} </Text>
+        <FarmMap farmZones={store.tempZoneData} />
       </View>
     );
   },

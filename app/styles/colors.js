@@ -4,6 +4,7 @@ const appColors = {
   darkGreen: '#3F5701',
   fadedGreen: '#A6BA7D',
   navBarGreen: '#D2E4B2',
+  dirtBrown: '#C4A366',
 };
 
 export default appColors;
