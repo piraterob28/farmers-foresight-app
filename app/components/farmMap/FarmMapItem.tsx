@@ -1,4 +1,4 @@
-import {StyleSheet, View, Animated, PanResponder} from 'react-native';
+import {StyleSheet, View, Animated, PanResponder, Text} from 'react-native';
 import React, {useRef} from 'react';
 import appColors from '../../styles/colors';
 
@@ -11,22 +11,26 @@ interface MapItemDataProps {
   width: number;
   mapX: number;
   mapY: number;
+  zoneType: 'inside' | 'outside';
 }
 
 const FarmMapItem: React.FC<FarmMapItemProps> = ({mapItem}) => {
   const mapItemData: MapItemDataProps = Object.values(mapItem)[0];
-  console.log('Pooooooop', mapItemData.mapX, mapItem);
   const pan1 = useRef(
     new Animated.ValueXY({x: mapItemData.mapX, y: mapItemData.mapY}),
   ).current;
-
   const panResponder1 = useRef(
     PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
+      onPanResponderStart: () => {
+        pan1.extractOffset();
+      },
       onPanResponderMove: Animated.event([null, {dx: pan1.x, dy: pan1.y}], {
         useNativeDriver: false,
       }),
       onPanResponderRelease: () => {
+        console.log('Pan 1', pan1);
         pan1.extractOffset();
       },
     }),
@@ -38,7 +42,24 @@ const FarmMapItem: React.FC<FarmMapItemProps> = ({mapItem}) => {
         transform: [{translateX: pan1.x}, {translateY: pan1.y}],
       }}
       {...panResponder1.panHandlers}>
-      <View style={styles.box} />
+      {mapItemData?.zoneType === 'outside' && (
+        <View
+          style={{
+            ...styles.outsidePlot,
+            height: mapItemData.length * 1.5,
+            width: mapItemData.width * 1.5,
+          }}
+        />
+      )}
+      {mapItemData?.zoneType === 'inside' && (
+        <View
+          style={{
+            ...styles.insidePlot,
+            height: mapItemData.length * 1.5,
+            width: mapItemData.width * 1.5,
+          }}
+        />
+      )}
     </Animated.View>
   );
 };
@@ -56,10 +77,13 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     fontWeight: 'bold',
   },
-  box: {
-    height: 100,
-    width: 30,
+  outsidePlot: {
     backgroundColor: appColors.dirtBrown,
+    borderRadius: 5,
+  },
+  insidePlot: {
+    backgroundColor: appColors.white,
+    borderWidth: StyleSheet.hairlineWidth,
     borderRadius: 5,
   },
 });

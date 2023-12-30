@@ -10,9 +10,8 @@ interface FarmMapProps {
 const FarmMap: React.FC<FarmMapProps> = ({farmZones}) => {
   return (
     <View style={styles.container}>
-      {farmZones.map((farmZone: object) => {
-        console.log('farmzone', farmZone);
-        return <FarmMapItem mapItem={farmZone} />;
+      {farmZones.map((farmZone: object, index: number) => {
+        return <FarmMapItem key={index} mapItem={farmZone} />;
       })}
     </View>
   );
@@ -20,8 +19,8 @@ const FarmMap: React.FC<FarmMapProps> = ({farmZones}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexGrow: 1,
+    backgroundColor: appColors.white,
   },
 });
 
