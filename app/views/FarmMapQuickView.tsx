@@ -4,6 +4,7 @@ import {observer} from 'mobx-react';
 import React from 'react';
 
 import FarmMap from '../components/farmMap/FarmMap';
+import appColors from '../styles/colors';
 
 interface FarmMapQuickViewProps {
   navigation: object;
@@ -14,7 +15,7 @@ interface FarmMapQuickViewProps {
 const FarmMapQuickView: React.FC<FarmMapQuickViewProps> = observer(
   ({navigation, route, store}) => {
     return (
-      <View>
+      <View style={{backgroundColor: appColors.white}}>
         <FarmMap farmZones={store.tempZoneData} />
       </View>
     );
