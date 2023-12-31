@@ -1,5 +1,5 @@
 import {StyleSheet, View, Animated, PanResponder} from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import appColors from '../../styles/colors';
 
 interface FarmMapItemProps {
@@ -21,6 +21,11 @@ const FarmMapItem: React.FC<FarmMapItemProps> = ({
 }) => {
   const [isDisabledState, setIsDisabledState] = useState(false);
   const mapItemData: MapItemDataProps = Object.values(mapItem)[0];
+  const isDisabledStateRef = React.useRef();
+  React.useEffect(() => {
+    isDisabledStateRef.current = isDisabledState;
+  }, [isDisabledState]);
+  let tempPan;
   const pan1 = useRef(
     new Animated.ValueXY({x: mapItemData.mapX, y: mapItemData.mapY}),
   ).current;
@@ -30,6 +35,7 @@ const FarmMapItem: React.FC<FarmMapItemProps> = ({
       onMoveShouldSetPanResponder: () => true,
       onPanResponderStart: () => {
         pan1.extractOffset();
+        tempPan = {x: pan1.x.__getValue(), y: pan1.y.__getValue()};
       },
       onPanResponderMove: (event, gestureState) => {
         Animated.event([null, {dx: pan1.x, dy: pan1.y}], {
@@ -41,18 +47,26 @@ const FarmMapItem: React.FC<FarmMapItemProps> = ({
           currentZone: mapItem,
         });
       },
-
       onPanResponderRelease: () => {
-        pan1.extractOffset();
+        if (isDisabledStateRef.current) {
+          pan1.setOffset({x: 0, y: 0});
+          pan1.setValue(tempPan);
+          setIsDisabledState(false);
+        } else {
+          pan1.extractOffset();
+        }
       },
     }),
   ).current;
 
   return (
     <Animated.View
-      style={{
-        transform: [{translateX: pan1.x}, {translateY: pan1.y}],
-      }}
+      style={[
+        {
+          transform: [{translateX: pan1.x}, {translateY: pan1.y}],
+        },
+        isDisabledState ? {zIndex: 100} : {zIndex: 1},
+      ]}
       {...panResponder1.panHandlers}>
       {mapItemData?.zoneType === 'outside' && (
         <View
@@ -65,7 +79,6 @@ const FarmMapItem: React.FC<FarmMapItemProps> = ({
             !!isDisabledState && {
               backgroundColor: 'red',
               opacity: 0.5,
-              zIndex: 1000,
             },
           ]}
         />
@@ -91,6 +104,7 @@ export default FarmMapItem;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    zIndex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -100,12 +114,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   outsidePlot: {
-    zIndex: 1,
+    zIndex: -1,
     backgroundColor: appColors.dirtBrown,
     borderRadius: 5,
   },
   insidePlot: {
-    zIndex: 1,
+    zIndex: -1,
     backgroundColor: appColors.white,
     borderWidth: StyleSheet.hairlineWidth,
     borderRadius: 5,
