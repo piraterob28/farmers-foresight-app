@@ -1,5 +1,5 @@
-import {StyleSheet, View, Animated, PanResponder, Text} from 'react-native';
-import React, {useRef} from 'react';
+import {StyleSheet, View, Animated, PanResponder} from 'react-native';
+import React, {useRef, useState} from 'react';
 import appColors from '../../styles/colors';
 
 interface FarmMapItemProps {
@@ -12,9 +12,14 @@ interface MapItemDataProps {
   mapX: number;
   mapY: number;
   zoneType: 'inside' | 'outside';
+  onUpdatePanResponder: any;
 }
 
-const FarmMapItem: React.FC<FarmMapItemProps> = ({mapItem}) => {
+const FarmMapItem: React.FC<FarmMapItemProps> = ({
+  mapItem,
+  onUpdatePanResponder,
+}) => {
+  const [isDisabledState, setIsDisabledState] = useState(false);
   const mapItemData: MapItemDataProps = Object.values(mapItem)[0];
   const pan1 = useRef(
     new Animated.ValueXY({x: mapItemData.mapX, y: mapItemData.mapY}),
@@ -26,11 +31,18 @@ const FarmMapItem: React.FC<FarmMapItemProps> = ({mapItem}) => {
       onPanResponderStart: () => {
         pan1.extractOffset();
       },
-      onPanResponderMove: Animated.event([null, {dx: pan1.x, dy: pan1.y}], {
-        useNativeDriver: false,
-      }),
+      onPanResponderMove: (event, gestureState) => {
+        Animated.event([null, {dx: pan1.x, dy: pan1.y}], {
+          useNativeDriver: false,
+        })(event, gestureState);
+        onUpdatePanResponder({
+          panRef: pan1,
+          setPanState: setIsDisabledState,
+          currentZone: mapItem,
+        });
+      },
+
       onPanResponderRelease: () => {
-        console.log('Pan 1', pan1);
         pan1.extractOffset();
       },
     }),
@@ -44,20 +56,30 @@ const FarmMapItem: React.FC<FarmMapItemProps> = ({mapItem}) => {
       {...panResponder1.panHandlers}>
       {mapItemData?.zoneType === 'outside' && (
         <View
-          style={{
-            ...styles.outsidePlot,
-            height: mapItemData.length * 1.5,
-            width: mapItemData.width * 1.5,
-          }}
+          style={[
+            {
+              ...styles.outsidePlot,
+              height: mapItemData.length * 1.5,
+              width: mapItemData.width * 1.5,
+            },
+            !!isDisabledState && {
+              backgroundColor: 'red',
+              opacity: 0.5,
+              zIndex: 1000,
+            },
+          ]}
         />
       )}
       {mapItemData?.zoneType === 'inside' && (
         <View
-          style={{
-            ...styles.insidePlot,
-            height: mapItemData.length * 1.5,
-            width: mapItemData.width * 1.5,
-          }}
+          style={[
+            {
+              ...styles.insidePlot,
+              height: mapItemData.length * 1.5,
+              width: mapItemData.width * 1.5,
+            },
+            !!isDisabledState && {backgroundColor: 'red'},
+          ]}
         />
       )}
     </Animated.View>
@@ -78,10 +100,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   outsidePlot: {
+    zIndex: 1,
     backgroundColor: appColors.dirtBrown,
     borderRadius: 5,
   },
   insidePlot: {
+    zIndex: 1,
     backgroundColor: appColors.white,
     borderWidth: StyleSheet.hairlineWidth,
     borderRadius: 5,
