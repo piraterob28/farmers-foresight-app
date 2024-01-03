@@ -14,6 +14,7 @@ import HeaderTitle from './app/components/header/HeaderTitle';
 import {StoreContext} from './app/context/store';
 import {store} from './app/stores/RootStore';
 import {useStore} from './app/hooks/useStore';
+import HeaderEditButton from './app/components/header/HeaderEditButton';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -34,7 +35,10 @@ function HomeTabNav(): React.JSX.Element {
       <Tab.Screen
         name="Quick View"
         options={{
-          title: 'Quick View',
+          headerTitle: () => (
+            <HeaderTitle text={'Map Quick View'} image={'task'} />
+          ),
+          headerRight: () => <HeaderEditButton />,
           headerStyle: {
             backgroundColor: '#ffffff',
           },
