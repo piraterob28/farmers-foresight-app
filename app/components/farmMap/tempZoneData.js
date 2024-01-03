@@ -6,6 +6,9 @@ const tempZoneData = [
       width: 30,
       mapX: 50,
       mapY: 300,
+      zoneIcons: {
+        dayHarvestNumber: 4,
+      },
     },
   },
   {
@@ -15,6 +18,11 @@ const tempZoneData = [
       width: 30,
       mapX: 100,
       mapY: 300,
+      zoneIcons: {
+        dayChoreNumber: 1,
+
+        emptyrowNumber: 2,
+      },
     },
   },
   {
@@ -33,6 +41,12 @@ const tempZoneData = [
       width: 30,
       mapX: 200,
       mapY: 300,
+      zoneIcons: {
+        dayChoreNumber: 1,
+        lateChoreNumber: 2,
+
+        emptyrowNumber: 2,
+      },
     },
   },
   {
@@ -51,6 +65,9 @@ const tempZoneData = [
       width: 30,
       mapX: 300,
       mapY: 300,
+      zoneIcons: {
+        emptyrowNumber: 2,
+      },
     },
   },
   {
@@ -60,6 +77,12 @@ const tempZoneData = [
       width: 30,
       mapX: 50,
       mapY: 140,
+      zoneIcons: {
+        dayChoreNumber: 1,
+        lateChoreNumber: 2,
+
+        lateharvestNumber: 5,
+      },
     },
   },
   {
@@ -78,6 +101,13 @@ const tempZoneData = [
       width: 30,
       mapX: 150,
       mapY: 140,
+      zoneIcons: {
+        dayChoreNumber: 1,
+        lateChoreNumber: 2,
+        dayHarvestNumber: 4,
+        lateharvestNumber: 5,
+        emptyrowNumber: 2,
+      },
     },
   },
   {
@@ -105,6 +135,10 @@ const tempZoneData = [
       width: 30,
       mapX: 300,
       mapY: 140,
+      zoneIcons: {
+        dayChoreNumber: 1,
+        lateChoreNumber: 2,
+      },
     },
   },
   {
@@ -123,6 +157,11 @@ const tempZoneData = [
       width: 16,
       mapX: 185,
       mapY: 460,
+      zoneIcons: {
+        dayHarvestNumber: 4,
+        lateharvestNumber: 5,
+        emptyrowNumber: 2,
+      },
     },
   },
   {
@@ -132,6 +171,12 @@ const tempZoneData = [
       width: 16,
       mapX: 220,
       mapY: 460,
+      zoneIcons: {
+        lateChoreNumber: 2,
+
+        lateharvestNumber: 5,
+        emptyrowNumber: 2,
+      },
     },
   },
 ];

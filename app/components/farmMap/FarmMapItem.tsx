@@ -1,6 +1,7 @@
 import {StyleSheet, View, Animated, PanResponder} from 'react-native';
 import React, {useMemo, useRef, useState} from 'react';
 import appColors from '../../styles/colors';
+import MapZoneIcons from './MapZoneIcons';
 
 interface FarmMapItemProps {
   mapItem: object;
@@ -13,6 +14,7 @@ interface MapItemDataProps {
   mapY: number;
   zoneType: 'inside' | 'outside';
   onUpdatePanResponder: any;
+  zoneIcons: object;
 }
 
 const FarmMapItem: React.FC<FarmMapItemProps> = ({
@@ -80,8 +82,11 @@ const FarmMapItem: React.FC<FarmMapItemProps> = ({
               backgroundColor: 'red',
               opacity: 0.5,
             },
-          ]}
-        />
+          ]}>
+          {!!mapItemData.zoneIcons && (
+            <MapZoneIcons zoneIcons={mapItemData?.zoneIcons} />
+          )}
+        </View>
       )}
       {mapItemData?.zoneType === 'inside' && (
         <View
@@ -92,8 +97,11 @@ const FarmMapItem: React.FC<FarmMapItemProps> = ({
               width: mapItemData.width * 1.5,
             },
             !!isDisabledState && {backgroundColor: 'red'},
-          ]}
-        />
+          ]}>
+          {!!mapItemData.zoneIcons && (
+            <MapZoneIcons zoneIcons={mapItemData?.zoneIcons} />
+          )}
+        </View>
       )}
     </Animated.View>
   );

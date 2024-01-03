@@ -15,7 +15,7 @@ interface FarmMapQuickViewProps {
 const FarmMapQuickView: React.FC<FarmMapQuickViewProps> = observer(
   ({navigation, route, store}) => {
     return (
-      <View style={{backgroundColor: appColors.white, zIndex: 1}}>
+      <View style={{}}>
         <FarmMap farmZones={store.tempZoneData} />
       </View>
     );
@@ -24,4 +24,6 @@ const FarmMapQuickView: React.FC<FarmMapQuickViewProps> = observer(
 
 export default FarmMapQuickView;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  FarmMapQuickViewContainer: {},
+});
