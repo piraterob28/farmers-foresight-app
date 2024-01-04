@@ -8,7 +8,7 @@ class FarmMapQuickStore {
   isEditMode: boolean = false;
   rootStore: RootStore;
   testText: string;
-  tempZoneData: typeof tempZoneData;
+  tempZoneData: Object[];
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this, {
@@ -27,21 +27,17 @@ class FarmMapQuickStore {
 
   setEditMode = () => {
     this.isEditMode = !this.isEditMode;
-    console.log('store', this.isEditMode);
   };
 
   updateZoneData = (updatedZone: object, zoneKey: string) => {
-    console.log('zones', tempZoneData[0], updatedZone);
     this.tempZoneData = this.tempZoneData.map(zone => {
-      let tempZone = {};
+      let tempZone: Object = {};
       if (Object.keys(zone)[0] === zoneKey) {
         tempZone[zoneKey] = updatedZone;
         return tempZone;
       }
       return zone;
     });
-
-    console.log('this.zoneData', this.tempZoneData);
   };
 }
 

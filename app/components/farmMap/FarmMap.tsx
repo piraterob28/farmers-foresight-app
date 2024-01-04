@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Modal, Text, SafeAreaView} from 'react-native';
 import appColors from '../../styles/colors';
 import FarmMapItem from './FarmMapItem';
 import MapBackgroundGrid from '../grids/mapBackgroundGrid';
@@ -21,16 +21,12 @@ interface ZoneProps {
 }
 
 const FarmMap: React.FC<FarmMapProps> = observer(({farmZones, store}) => {
-  const onUpdatePanResponder = ({
-    panRef,
-    setPanState,
-    currentZone,
-  }): boolean => {
+  const onUpdatePanResponder = ({panRef, setPanState, currentZone}) => {
     let isInterSecting: boolean = false;
     store.tempZoneData.forEach((zone: ZoneProps) => {
       const zoneValues = Object.values(zone)[0];
-      const currentZoneValues = Object.values(currentZone)[0];
-      if (zone !== currentZone) {
+      const currentZoneValues: ZoneProps = Object.values(currentZone)[0];
+      if (Object.keys(zone)[0] !== Object.keys(currentZone)[0]) {
         const zoneXExtended = zoneValues.mapX + zoneValues.width * 1.5;
         const zoneYExtended = zoneValues.mapY + zoneValues.length * 1.5;
         const currentZoneXExtended =
@@ -70,6 +66,18 @@ const FarmMap: React.FC<FarmMapProps> = observer(({farmZones, store}) => {
 
   return (
     <View style={styles.container}>
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={true}
+        onRequestClose={() => {
+          console.log('Hey closed');
+        }}>
+        <View>
+          <Text>Hey</Text>
+        </View>
+      </Modal>
+
       <MapBackgroundGrid isEditMode={store.isEditMode} />
       {farmZones.map((farmZone: object, index: number) => {
         return (

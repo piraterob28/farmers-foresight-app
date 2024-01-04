@@ -1,4 +1,10 @@
-import {StyleSheet, View, Animated, PanResponder} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Animated,
+  PanResponder,
+  TouchableOpacity,
+} from 'react-native';
 import React, {useMemo, useRef, useState} from 'react';
 import {observer} from 'mobx-react';
 import appColors from '../../styles/colors';
@@ -83,7 +89,11 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
         ]}
         {...panResponder1.panHandlers}>
         {mapItemData?.zoneType === 'outside' && (
-          <View
+          <TouchableOpacity
+            disabled={isEditMode}
+            onPress={() => {
+              console.log('press');
+            }}
             style={[
               {
                 ...styles.outsidePlot,
@@ -98,7 +108,7 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
             {!!mapItemData.zoneIcons && (
               <MapZoneIcons zoneIcons={mapItemData?.zoneIcons} />
             )}
-          </View>
+          </TouchableOpacity>
         )}
         {mapItemData?.zoneType === 'inside' && (
           <View
