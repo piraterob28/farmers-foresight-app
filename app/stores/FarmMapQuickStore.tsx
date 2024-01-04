@@ -5,7 +5,7 @@ import tempZoneData from '../components/farmMap/tempZoneData';
 
 class FarmMapQuickStore {
   isLoading: boolean = false;
-  isEditMode: boolean = true;
+  isEditMode: boolean = false;
   rootStore: RootStore;
   testText: string;
   tempZoneData: typeof tempZoneData;

@@ -1,6 +1,7 @@
-import {StyleSheet, View, Dimensions} from 'react-native';
+import {StyleSheet, View, Dimensions, ImageBackground} from 'react-native';
 import React from 'react';
 import appColors from '../../styles/colors';
+import CheckeredGrey from '../../assets/images/checkered-grey.png';
 
 const windowWidth: number = Dimensions.get('window').width;
 const windowHeight: number = Dimensions.get('window').height;
@@ -12,26 +13,13 @@ interface MapBackgroundGridProps {
 }
 
 const MapBackgroundGrid: React.FC<MapBackgroundGridProps> = ({isEditMode}) => {
-  const numberRows: number = Math.floor(windowHeight / checkerSize) + 1;
-  const numberCols: number = Math.floor(windowWidth / checkerSize) + 1;
-
   return (
-    <View style={isEditMode ? styles.editGridContainer : styles.gridContainer}>
-      {/* {isEditMode && (
-        <View style={{flexDirection: 'row'}}>
-          {[...Array(numberCols)].map((_e, index1) => (
-            <View>
-              {[...Array(numberRows)].map((_i, index2) => {
-                if ((index1 + index2) % 2 === 0) {
-                  return <View style={styles.gridLines} />;
-                } else {
-                  return <View style={styles.gridLinesFilled} />;
-                }
-              })}
-            </View>
-          ))}
-        </View>
-      )} */}
+    <View style={styles.gridContainer}>
+      <ImageBackground
+        source={require('../../assets/images/checkered-grey.png')}
+        resizeMode="repeat"
+        style={isEditMode ? styles.editGridContainer : {display: 'none'}}
+      />
     </View>
   );
 };
@@ -40,10 +28,9 @@ export default MapBackgroundGrid;
 
 const styles = StyleSheet.create({
   editGridContainer: {
-    position: 'absolute',
     height: windowHeight,
     width: windowWidth,
-    backgroundColor: appColors.fadedGreen,
+    opacity: 0.4,
   },
   gridContainer: {
     position: 'absolute',
