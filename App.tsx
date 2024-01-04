@@ -38,7 +38,9 @@ function HomeTabNav(): React.JSX.Element {
           headerTitle: () => (
             <HeaderTitle text={'Map Quick View'} image={'task'} />
           ),
-          headerRight: () => <HeaderEditButton />,
+          headerRight: () => (
+            <HeaderEditButton onSelect={store.farmMapQuickStore.setEditMode} />
+          ),
           headerStyle: {
             backgroundColor: '#ffffff',
           },

@@ -5,6 +5,7 @@ import tempZoneData from '../components/farmMap/tempZoneData';
 
 class FarmMapQuickStore {
   isLoading: boolean = false;
+  isEditMode: boolean = true;
   rootStore: RootStore;
   testText: string;
   tempZoneData: typeof tempZoneData;
@@ -12,8 +13,9 @@ class FarmMapQuickStore {
   constructor(rootStore: RootStore) {
     makeAutoObservable(this, {
       isLoading: observable,
+      isEditMode: observable,
       testText: observable,
-      loadSellers: action,
+      setEditMode: action,
       rootStore: false,
       tempZoneData: observable,
     });
@@ -22,8 +24,9 @@ class FarmMapQuickStore {
     this.tempZoneData = tempZoneData;
   }
 
-  loadSellers = async () => {
-    this.isLoading = true;
+  setEditMode = async () => {
+    this.isEditMode = !this.isEditMode;
+    console.log('store', this.isEditMode);
   };
 }
 

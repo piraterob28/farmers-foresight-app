@@ -2,15 +2,36 @@ import {StyleSheet, View, Dimensions} from 'react-native';
 import React from 'react';
 import appColors from '../../styles/colors';
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const windowWidth: number = Dimensions.get('window').width;
+const windowHeight: number = Dimensions.get('window').height;
 
-const MapBackgroundGrid: React.FC = () => {
+const checkerSize: number = 50;
+
+interface MapBackgroundGridProps {
+  isEditMode: boolean;
+}
+
+const MapBackgroundGrid: React.FC<MapBackgroundGridProps> = ({isEditMode}) => {
+  const numberRows: number = Math.floor(windowHeight / checkerSize) + 1;
+  const numberCols: number = Math.floor(windowWidth / checkerSize) + 1;
+
   return (
-    <View style={styles.gridContainer}>
-      {/* {[...Array(100)].map(() => (
-        <View style={styles.gridLines} />
-      ))} */}
+    <View style={isEditMode ? styles.editGridContainer : styles.gridContainer}>
+      {/* {isEditMode && (
+        <View style={{flexDirection: 'row'}}>
+          {[...Array(numberCols)].map((_e, index1) => (
+            <View>
+              {[...Array(numberRows)].map((_i, index2) => {
+                if ((index1 + index2) % 2 === 0) {
+                  return <View style={styles.gridLines} />;
+                } else {
+                  return <View style={styles.gridLinesFilled} />;
+                }
+              })}
+            </View>
+          ))}
+        </View>
+      )} */}
     </View>
   );
 };
@@ -18,6 +39,12 @@ const MapBackgroundGrid: React.FC = () => {
 export default MapBackgroundGrid;
 
 const styles = StyleSheet.create({
+  editGridContainer: {
+    position: 'absolute',
+    height: windowHeight,
+    width: windowWidth,
+    backgroundColor: appColors.fadedGreen,
+  },
   gridContainer: {
     position: 'absolute',
     height: windowHeight,
@@ -25,9 +52,16 @@ const styles = StyleSheet.create({
     backgroundColor: appColors.white,
   },
   gridLines: {
-    height: 10,
-    width: 10,
+    height: checkerSize,
+    width: checkerSize,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: appColors.fadedGreen,
+  },
+  gridLinesFilled: {
+    height: checkerSize,
+    width: checkerSize,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: appColors.fadedGreen,
+    backgroundColor: appColors.fadedGreen,
   },
 });

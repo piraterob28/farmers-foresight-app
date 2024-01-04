@@ -1,13 +1,17 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import HeaderGreenEdit from '../../assets/icons/edit-green.svg';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const HeaderEditButton = () => {
+interface HeaderEditButtonwProps {
+  onSelect: Function;
+}
+
+const HeaderEditButton: React.FC<HeaderEditButtonwProps> = ({onSelect}) => {
   return (
     <TouchableOpacity
       hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
-      style={styles.greenEditContainer}>
+      style={styles.greenEditContainer}
+      onPress={() => onSelect()}>
       <HeaderGreenEdit height={25} width={25} />
     </TouchableOpacity>
   );

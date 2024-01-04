@@ -3,9 +3,12 @@ import {View, StyleSheet} from 'react-native';
 import appColors from '../../styles/colors';
 import FarmMapItem from './FarmMapItem';
 import MapBackgroundGrid from '../grids/mapBackgroundGrid';
+import FarmMapQuickStore from '../../stores/FarmMapQuickStore';
+import {observer} from 'mobx-react';
 
 interface FarmMapProps {
   farmZones: object[];
+  store: FarmMapQuickStore;
 }
 
 interface ZoneProps {
@@ -17,7 +20,7 @@ interface ZoneProps {
   onUpdatePanResponder: any;
 }
 
-const FarmMap: React.FC<FarmMapProps> = ({farmZones}) => {
+const FarmMap: React.FC<FarmMapProps> = observer(({farmZones, store}) => {
   const onUpdatePanResponder = ({
     panRef,
     setPanState,
@@ -66,19 +69,20 @@ const FarmMap: React.FC<FarmMapProps> = ({farmZones}) => {
   };
   return (
     <View style={styles.container}>
-      <MapBackgroundGrid />
+      <MapBackgroundGrid isEditMode={store.isEditMode} />
       {farmZones.map((farmZone: object, index: number) => {
         return (
           <FarmMapItem
             key={index}
             mapItem={farmZone}
             onUpdatePanResponder={onUpdatePanResponder}
+            isEditMode={store.isEditMode}
           />
         );
       })}
     </View>
   );
-};
+});
 const styles = StyleSheet.create({
   container: {
     flex: 1,
