@@ -7,6 +7,7 @@ import MapZoneIcons from './MapZoneIcons';
 interface FarmMapItemProps {
   mapItem: object;
   onUpdatePanResponder: Function;
+  onCompletePanResponder: Function;
   isEditMode: boolean;
 }
 
@@ -20,7 +21,7 @@ interface MapItemDataProps {
 }
 
 const FarmMapItem: React.FC<FarmMapItemProps> = observer(
-  ({mapItem, onUpdatePanResponder, isEditMode}) => {
+  ({mapItem, onUpdatePanResponder, onCompletePanResponder, isEditMode}) => {
     const [isDisabledState, setIsDisabledState] = useState(false);
     const mapItemData: MapItemDataProps = Object.values(mapItem)[0];
     const isDisabledStateRef = React.useRef(isDisabledState);
@@ -58,6 +59,15 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
             setIsDisabledState(false);
           } else {
             pan1.extractOffset();
+
+            onCompletePanResponder(
+              {
+                ...mapItemData,
+                mapX: pan1.x.__getValue(),
+                mapY: pan1.y.__getValue(),
+              },
+              Object.keys(mapItem)[0],
+            );
           }
         },
       }),

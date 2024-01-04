@@ -27,7 +27,7 @@ const FarmMap: React.FC<FarmMapProps> = observer(({farmZones, store}) => {
     currentZone,
   }): boolean => {
     let isInterSecting: boolean = false;
-    farmZones.forEach((zone: ZoneProps) => {
+    store.tempZoneData.forEach((zone: ZoneProps) => {
       const zoneValues = Object.values(zone)[0];
       const currentZoneValues = Object.values(currentZone)[0];
       if (zone !== currentZone) {
@@ -67,6 +67,7 @@ const FarmMap: React.FC<FarmMapProps> = observer(({farmZones, store}) => {
 
     setPanState(isInterSecting);
   };
+
   return (
     <View style={styles.container}>
       <MapBackgroundGrid isEditMode={store.isEditMode} />
@@ -76,6 +77,7 @@ const FarmMap: React.FC<FarmMapProps> = observer(({farmZones, store}) => {
             key={index}
             mapItem={farmZone}
             onUpdatePanResponder={onUpdatePanResponder}
+            onCompletePanResponder={store.updateZoneData}
             isEditMode={store.isEditMode}
           />
         );
