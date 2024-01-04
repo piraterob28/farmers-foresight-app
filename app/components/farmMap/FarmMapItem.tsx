@@ -5,7 +5,7 @@ import {
   PanResponder,
   TouchableOpacity,
 } from 'react-native';
-import React, {useMemo, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {observer} from 'mobx-react';
 import appColors from '../../styles/colors';
 import MapZoneIcons from './MapZoneIcons';
@@ -14,6 +14,7 @@ interface FarmMapItemProps {
   mapItem: object;
   onUpdatePanResponder: Function;
   onCompletePanResponder: Function;
+  onItemSelect: Function;
   isEditMode: boolean;
 }
 
@@ -27,7 +28,13 @@ interface MapItemDataProps {
 }
 
 const FarmMapItem: React.FC<FarmMapItemProps> = observer(
-  ({mapItem, onUpdatePanResponder, onCompletePanResponder, isEditMode}) => {
+  ({
+    mapItem,
+    onUpdatePanResponder,
+    onCompletePanResponder,
+    isEditMode,
+    onItemSelect,
+  }) => {
     const [isDisabledState, setIsDisabledState] = useState(false);
     const mapItemData: MapItemDataProps = Object.values(mapItem)[0];
     const isDisabledStateRef = React.useRef(isDisabledState);
@@ -92,7 +99,7 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
           <TouchableOpacity
             disabled={isEditMode}
             onPress={() => {
-              console.log('press');
+              onItemSelect(mapItem);
             }}
             style={[
               {

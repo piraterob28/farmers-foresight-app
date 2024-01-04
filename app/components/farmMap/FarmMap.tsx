@@ -1,10 +1,11 @@
-import React from 'react';
-import {View, StyleSheet, Modal, Text, SafeAreaView} from 'react-native';
+import React, {useState} from 'react';
+import {View, StyleSheet, Modal, Text, Touchable} from 'react-native';
 import appColors from '../../styles/colors';
 import FarmMapItem from './FarmMapItem';
 import MapBackgroundGrid from '../grids/mapBackgroundGrid';
 import FarmMapQuickStore from '../../stores/FarmMapQuickStore';
 import {observer} from 'mobx-react';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 interface FarmMapProps {
   farmZones: object[];
@@ -21,6 +22,8 @@ interface ZoneProps {
 }
 
 const FarmMap: React.FC<FarmMapProps> = observer(({farmZones, store}) => {
+  const [showModal, setShowModal] = useState(true);
+  const [modalItem, setModalItem] = useState({});
   const onUpdatePanResponder = ({panRef, setPanState, currentZone}) => {
     let isInterSecting: boolean = false;
     store.tempZoneData.forEach((zone: ZoneProps) => {
@@ -64,26 +67,38 @@ const FarmMap: React.FC<FarmMapProps> = observer(({farmZones, store}) => {
     setPanState(isInterSecting);
   };
 
+  const onMapItemPress = (mapItem: Object) => {
+    console.log('mapItem', mapItem);
+    setModalItem(mapItem);
+    setShowModal(true);
+  };
   return (
     <View style={styles.container}>
       <Modal
         animationType="slide"
-        transparent={false}
-        visible={true}
+        transparent={true}
+        visible={showModal}
         onRequestClose={() => {
           console.log('Hey closed');
         }}>
-        <View>
-          <Text>Hey</Text>
+        <View style={styles.modalContainerStyles}>
+          <TouchableOpacity
+            onPress={() => setShowModal(false)}
+            style={styles.modalBackground}
+          />
+          <View style={styles.modalInfoCardcontainer}>
+            <Text>{Object.keys(modalItem)[0]}</Text>
+            {/* start here plumbing through the aone info to the modal*/}
+          </View>
         </View>
       </Modal>
-
       <MapBackgroundGrid isEditMode={store.isEditMode} />
       {farmZones.map((farmZone: object, index: number) => {
         return (
           <FarmMapItem
             key={index}
             mapItem={farmZone}
+            onItemSelect={onMapItemPress}
             onUpdatePanResponder={onUpdatePanResponder}
             onCompletePanResponder={store.updateZoneData}
             isEditMode={store.isEditMode}
@@ -94,6 +109,22 @@ const FarmMap: React.FC<FarmMapProps> = observer(({farmZones, store}) => {
   );
 });
 const styles = StyleSheet.create({
+  modalContainerStyles: {
+    height: '100%',
+    justifyContent: 'flex-end',
+    paddingBottom: 90,
+  },
+  modalBackground: {
+    height: '100%',
+    width: '100%',
+    backgroundColor: 'transparent',
+  },
+  modalInfoCardcontainer: {
+    backgroundColor: appColors.fadedGreen,
+    width: '100%',
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+  },
   container: {
     flex: 1,
     opacity: 1,
