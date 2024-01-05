@@ -4,8 +4,8 @@ import appColors from '../../styles/colors';
 import FarmMapItem from './FarmMapItem';
 import MapBackgroundGrid from '../grids/mapBackgroundGrid';
 import FarmMapQuickStore from '../../stores/FarmMapQuickStore';
+import MapQuickViewModal from '../modals/MapQuickViewModal';
 import {observer} from 'mobx-react';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 interface FarmMapProps {
   farmZones: object[];
@@ -68,30 +68,16 @@ const FarmMap: React.FC<FarmMapProps> = observer(({farmZones, store}) => {
   };
 
   const onMapItemPress = (mapItem: Object) => {
-    console.log('mapItem', mapItem);
     setModalItem(mapItem);
     setShowModal(true);
   };
   return (
     <View style={styles.container}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={showModal}
-        onRequestClose={() => {
-          console.log('Hey closed');
-        }}>
-        <View style={styles.modalContainerStyles}>
-          <TouchableOpacity
-            onPress={() => setShowModal(false)}
-            style={styles.modalBackground}
-          />
-          <View style={styles.modalInfoCardcontainer}>
-            <Text>{Object.keys(modalItem)[0]}</Text>
-            {/* start here plumbing through the aone info to the modal*/}
-          </View>
-        </View>
-      </Modal>
+      <MapQuickViewModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        modalItem={modalItem}
+      />
       <MapBackgroundGrid isEditMode={store.isEditMode} />
       {farmZones.map((farmZone: object, index: number) => {
         return (
@@ -109,22 +95,6 @@ const FarmMap: React.FC<FarmMapProps> = observer(({farmZones, store}) => {
   );
 });
 const styles = StyleSheet.create({
-  modalContainerStyles: {
-    height: '100%',
-    justifyContent: 'flex-end',
-    paddingBottom: 90,
-  },
-  modalBackground: {
-    height: '100%',
-    width: '100%',
-    backgroundColor: 'transparent',
-  },
-  modalInfoCardcontainer: {
-    backgroundColor: appColors.fadedGreen,
-    width: '100%',
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-  },
   container: {
     flex: 1,
     opacity: 1,

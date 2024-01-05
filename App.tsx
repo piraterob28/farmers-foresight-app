@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -15,6 +15,7 @@ import {StoreContext} from './app/context/store';
 import {store} from './app/stores/RootStore';
 import {useStore} from './app/hooks/useStore';
 import HeaderEditButton from './app/components/header/HeaderEditButton';
+import {observer} from 'mobx-react';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -106,17 +107,21 @@ const ZoneStackNavigator = (): React.JSX.Element => {
   );
 };
 
-function Root(): React.JSX.Element {
+const Root = observer(() => {
   return (
     <Drawer.Navigator
       screenOptions={{
         headerShown: false,
       }}>
-      <Drawer.Screen name="Home" component={HomeTabNav} />
+      <Drawer.Screen
+        name="Home"
+        component={HomeTabNav}
+        options={{swipeEnabled: !store.farmMapQuickStore.isEditMode}}
+      />
       <Drawer.Screen name="Zones" component={ZoneStackNavigator} />
     </Drawer.Navigator>
   );
-}
+});
 
 function App(): React.JSX.Element {
   return (
