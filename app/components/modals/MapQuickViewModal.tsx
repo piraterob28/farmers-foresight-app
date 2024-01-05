@@ -14,15 +14,8 @@ const MapQuickViewModal: React.FC<MapQuickViewModalProps> = ({
   modalItem,
 }) => {
   const modalItemValues: Object = Object.values(modalItem)[0];
-  console.log('modalItemValues', modalItemValues);
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={showModal}
-      onRequestClose={() => {
-        console.log('Hey closed');
-      }}>
+    <Modal animationType="slide" transparent={true} visible={showModal}>
       <View style={styles.modalContainerStyles}>
         <TouchableOpacity
           onPress={() => setShowModal(false)}
@@ -35,18 +28,29 @@ const MapQuickViewModal: React.FC<MapQuickViewModalProps> = ({
             </Text>
           </View>
           <View style={styles.modalInfoOptionsContainer}>
-            {(modalItemValues?.zoneIcons?.dayChoreNumber > 0 ||
-              modalItemValues?.zoneIcons?.lateChoreNumber > 0) && (
-              <View>
+            {modalItemValues?.zoneIcons?.lateChoreNumber > 0 && (
+              <TouchableOpacity>
                 <Text> {modalItemValues?.zoneIcons?.dayChoreNumber}</Text>
-              </View>
+              </TouchableOpacity>
             )}
-            {(modalItemValues?.zoneIcons?.dayHarvestNumber > 0 ||
-              modalItemValues?.zoneIcons?.lateHarvestNumber > 0) && (
+            {modalItemValues?.zoneIcons?.dayChoreNumber > 0 && (
+              <TouchableOpacity>
+                <Text> {modalItemValues?.zoneIcons?.dayChoreNumber}</Text>
+              </TouchableOpacity>
+            )}
+            {modalItemValues?.zoneIcons?.lateHarvestNumber > 0 && (
               <View>
                 <Text> {modalItemValues?.zoneIcons?.dayHarvestNumber}</Text>
               </View>
             )}
+            {modalItemValues?.zoneIcons?.dayChoreNumber > 0 && (
+              <TouchableOpacity>
+                <Text> {modalItemValues?.zoneIcons?.dayChoreNumber}</Text>
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity>
+              <Text> {modalItemValues?.zoneIcons?.dayChoreNumber}</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

@@ -9,22 +9,14 @@ import React, {useRef, useState} from 'react';
 import {observer} from 'mobx-react';
 import appColors from '../../styles/colors';
 import MapZoneIcons from './MapZoneIcons';
+import {ZoneProps} from '../../types/zoneTypes';
 
 interface FarmMapItemProps {
-  mapItem: object;
+  mapItem: ZoneProps;
   onUpdatePanResponder: Function;
   onCompletePanResponder: Function;
   onItemSelect: Function;
   isEditMode: boolean;
-}
-
-interface MapItemDataProps {
-  length: number;
-  width: number;
-  mapX: number;
-  mapY: number;
-  zoneType: 'inside' | 'outside';
-  zoneIcons: object;
 }
 
 const FarmMapItem: React.FC<FarmMapItemProps> = observer(
@@ -36,17 +28,21 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
     onItemSelect,
   }) => {
     const [isDisabledState, setIsDisabledState] = useState(false);
-    const mapItemData: MapItemDataProps = Object.values(mapItem)[0];
+    const mapItemData = mapItem?.zoneData;
     const isDisabledStateRef = React.useRef(isDisabledState);
     const isEditModeRef = React.useRef(isEditMode);
+
     React.useEffect(() => {
       isDisabledStateRef.current = isDisabledState;
       isEditModeRef.current = isEditMode;
     }, [isDisabledState, isEditMode]);
+
     let tempPan: Object;
+
     const pan1 = useRef(
       new Animated.ValueXY({x: mapItemData.mapX, y: mapItemData.mapY}),
     ).current;
+
     const panResponder1 = useRef(
       PanResponder.create({
         onStartShouldSetPanResponder: () => isEditModeRef.current,
@@ -79,7 +75,7 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
                 mapX: pan1.x.__getValue(),
                 mapY: pan1.y.__getValue(),
               },
-              Object.keys(mapItem)[0],
+              mapItem.zoneNumber,
             );
           }
         },

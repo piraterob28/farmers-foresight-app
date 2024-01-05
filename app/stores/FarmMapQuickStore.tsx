@@ -1,6 +1,6 @@
 import {makeAutoObservable, observable, action} from 'mobx';
 import {RootStore} from './RootStore';
-
+import {ZoneProps, ZoneDataProps} from '../types/zoneTypes';
 import tempZoneData from '../components/farmMap/tempZoneData';
 
 class FarmMapQuickStore {
@@ -8,7 +8,7 @@ class FarmMapQuickStore {
   isEditMode: boolean = false;
   rootStore: RootStore;
   testText: string;
-  tempZoneData: Object[];
+  farmZoneData: ZoneProps[];
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this, {
@@ -18,23 +18,21 @@ class FarmMapQuickStore {
       setEditMode: action,
       updateZoneData: action,
       rootStore: false,
-      tempZoneData: observable,
+      farmZoneData: observable,
     });
     this.rootStore = rootStore;
     this.testText = 'test test 45 28';
-    this.tempZoneData = tempZoneData;
+    this.farmZoneData = tempZoneData;
   }
 
   setEditMode = () => {
     this.isEditMode = !this.isEditMode;
   };
 
-  updateZoneData = (updatedZone: object, zoneKey: string) => {
-    this.tempZoneData = this.tempZoneData.map(zone => {
-      let tempZone: Object = {};
-      if (Object.keys(zone)[0] === zoneKey) {
-        tempZone[zoneKey] = updatedZone;
-        return tempZone;
+  updateZoneData = (updatedZone: ZoneDataProps, zoneKey: number) => {
+    this.farmZoneData = this.farmZoneData.map(zone => {
+      if (zone.zoneNumber === zoneKey) {
+        zone.zoneData = updatedZone;
       }
       return zone;
     });

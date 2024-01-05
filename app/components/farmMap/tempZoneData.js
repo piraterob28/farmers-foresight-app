@@ -1,6 +1,7 @@
 const tempZoneData = [
   {
-    zone1: {
+    zoneNumber: 1,
+    zoneData: {
       zoneType: 'outside',
       length: 100,
       width: 30,
@@ -12,7 +13,8 @@ const tempZoneData = [
     },
   },
   {
-    zone2: {
+    zoneNumber: 2,
+    zoneData: {
       zoneType: 'outside',
       length: 100,
       width: 30,
@@ -26,7 +28,8 @@ const tempZoneData = [
     },
   },
   {
-    zone3: {
+    zoneNumber: 3,
+    zoneData: {
       zoneType: 'outside',
       length: 100,
       width: 30,
@@ -35,7 +38,8 @@ const tempZoneData = [
     },
   },
   {
-    zone4: {
+    zoneNumber: 4,
+    zoneData: {
       zoneType: 'outside',
       length: 100,
       width: 30,
@@ -50,7 +54,8 @@ const tempZoneData = [
     },
   },
   {
-    zone5: {
+    zoneNumber: 5,
+    zoneData: {
       zoneType: 'outside',
       length: 100,
       width: 30,
@@ -59,7 +64,8 @@ const tempZoneData = [
     },
   },
   {
-    zone6: {
+    zoneNumber: 6,
+    zoneData: {
       zoneType: 'outside',
       length: 100,
       width: 30,
@@ -71,7 +77,8 @@ const tempZoneData = [
     },
   },
   {
-    zone7: {
+    zoneNumber: 7,
+    zoneData: {
       zoneType: 'outside',
       length: 100,
       width: 30,
@@ -86,7 +93,8 @@ const tempZoneData = [
     },
   },
   {
-    zone8: {
+    zoneNumber: 8,
+    zoneData: {
       zoneType: 'outside',
       length: 100,
       width: 30,
@@ -95,7 +103,8 @@ const tempZoneData = [
     },
   },
   {
-    zone9: {
+    zoneNumber: 9,
+    zoneData: {
       zoneType: 'outside',
       length: 100,
       width: 30,
@@ -111,7 +120,8 @@ const tempZoneData = [
     },
   },
   {
-    zone10: {
+    zoneNumber: 10,
+    zoneData: {
       zoneType: 'outside',
       length: 100,
       width: 30,
@@ -120,7 +130,8 @@ const tempZoneData = [
     },
   },
   {
-    zone11: {
+    zoneNumber: 11,
+    zoneData: {
       zoneType: 'outside',
       length: 100,
       width: 30,
@@ -129,7 +140,8 @@ const tempZoneData = [
     },
   },
   {
-    zone12: {
+    zoneNumber: 12,
+    zoneData: {
       zoneType: 'outside',
       length: 100,
       width: 30,
@@ -142,7 +154,8 @@ const tempZoneData = [
     },
   },
   {
-    zone13: {
+    zoneNumber: 13,
+    zoneData: {
       zoneType: 'inside',
       length: 100,
       width: 16,
@@ -151,7 +164,8 @@ const tempZoneData = [
     },
   },
   {
-    zone14: {
+    zoneNumber: 14,
+    zoneData: {
       zoneType: 'inside',
       length: 100,
       width: 16,
@@ -165,7 +179,8 @@ const tempZoneData = [
     },
   },
   {
-    zone15: {
+    zoneNumber: 15,
+    zoneData: {
       zoneType: 'inside',
       length: 100,
       width: 16,

@@ -6,32 +6,34 @@ import MapBackgroundGrid from '../grids/mapBackgroundGrid';
 import FarmMapQuickStore from '../../stores/FarmMapQuickStore';
 import MapQuickViewModal from '../modals/MapQuickViewModal';
 import {observer} from 'mobx-react';
+import {ZoneProps} from '../../types/zoneTypes';
 
 interface FarmMapProps {
-  farmZones: object[];
   store: FarmMapQuickStore;
 }
 
-interface ZoneProps {
-  length: number;
-  width: number;
-  mapX: number;
-  mapY: number;
-  zoneType: 'inside' | 'outside';
-  onUpdatePanResponder: any;
+interface onUpdatePanResponderProps {
+  (panRef: any, setPanState: Function, currentZone: ZoneProps): void;
 }
 
-const FarmMap: React.FC<FarmMapProps> = observer(({farmZones, store}) => {
-  const [showModal, setShowModal] = useState(true);
+const FarmMap: React.FC<FarmMapProps> = observer(({store}) => {
+  const [showModal, setShowModal] = useState(false);
   const [modalItem, setModalItem] = useState({});
-  const onUpdatePanResponder = ({panRef, setPanState, currentZone}) => {
+
+  const onUpdatePanResponder: onUpdatePanResponderProps = ({
+    panRef,
+    setPanState,
+    currentZone,
+  }) => {
     let isInterSecting: boolean = false;
-    store.tempZoneData.forEach((zone: ZoneProps) => {
-      const zoneValues = Object.values(zone)[0];
-      const currentZoneValues: ZoneProps = Object.values(currentZone)[0];
-      if (Object.keys(zone)[0] !== Object.keys(currentZone)[0]) {
+    store.farmZoneData.forEach(zone => {
+      const zoneValues = zone?.zoneData;
+      const currentZoneValues = currentZone?.zoneData;
+
+      if (zone?.zoneNumber !== currentZone?.zoneNumber) {
         const zoneXExtended = zoneValues.mapX + zoneValues.width * 1.5;
         const zoneYExtended = zoneValues.mapY + zoneValues.length * 1.5;
+
         const currentZoneXExtended =
           panRef.x.__getValue() + currentZoneValues.width * 1.5;
         const currentZoneYExtended =
@@ -63,7 +65,6 @@ const FarmMap: React.FC<FarmMapProps> = observer(({farmZones, store}) => {
         }
       }
     });
-
     setPanState(isInterSecting);
   };
 
@@ -71,6 +72,7 @@ const FarmMap: React.FC<FarmMapProps> = observer(({farmZones, store}) => {
     setModalItem(mapItem);
     setShowModal(true);
   };
+
   return (
     <View style={styles.container}>
       <MapQuickViewModal
@@ -79,7 +81,7 @@ const FarmMap: React.FC<FarmMapProps> = observer(({farmZones, store}) => {
         modalItem={modalItem}
       />
       <MapBackgroundGrid isEditMode={store.isEditMode} />
-      {farmZones.map((farmZone: object, index: number) => {
+      {store.farmZoneData.map((farmZone, index: number) => {
         return (
           <FarmMapItem
             key={index}
