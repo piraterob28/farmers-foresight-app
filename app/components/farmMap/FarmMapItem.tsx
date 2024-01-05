@@ -114,7 +114,11 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
           </TouchableOpacity>
         )}
         {mapItemData?.zoneType === 'inside' && (
-          <View
+          <TouchableOpacity
+            disabled={isEditMode}
+            onPress={() => {
+              onItemSelect(mapItem);
+            }}
             style={[
               {
                 ...styles.insidePlot,
@@ -126,7 +130,7 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
             {!!mapItemData.zoneIcons && (
               <MapZoneIcons zoneIcons={mapItemData?.zoneIcons} />
             )}
-          </View>
+          </TouchableOpacity>
         )}
       </Animated.View>
     );

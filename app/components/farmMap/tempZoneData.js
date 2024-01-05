@@ -88,7 +88,7 @@ const tempZoneData = [
         dayChoreNumber: 1,
         lateChoreNumber: 2,
 
-        lateharvestNumber: 5,
+        lateHarvestNumber: 5,
       },
     },
   },
@@ -114,7 +114,7 @@ const tempZoneData = [
         dayChoreNumber: 1,
         lateChoreNumber: 2,
         dayHarvestNumber: 4,
-        lateharvestNumber: 5,
+        lateHarvestNumber: 5,
         emptyrowNumber: 2,
       },
     },
@@ -173,7 +173,7 @@ const tempZoneData = [
       mapY: 460,
       zoneIcons: {
         dayHarvestNumber: 4,
-        lateharvestNumber: 5,
+        lateHarvestNumber: 5,
         emptyrowNumber: 2,
       },
     },
@@ -189,7 +189,7 @@ const tempZoneData = [
       zoneIcons: {
         lateChoreNumber: 2,
 
-        lateharvestNumber: 5,
+        lateHarvestNumber: 5,
         emptyrowNumber: 2,
       },
     },

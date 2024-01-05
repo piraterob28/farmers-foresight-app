@@ -1,11 +1,13 @@
 import {StyleSheet, Text, View, Modal, TouchableOpacity} from 'react-native';
 import React from 'react';
 import appColors from '../../styles/colors';
+import {ZoneProps, ZoneIconProps} from '../../types/zoneTypes';
+import QuickViewModalOptionCard from '../cards/modalCards/QuickViewModalOptionCard';
 
 interface MapQuickViewModalProps {
   showModal: boolean;
   setShowModal: Function;
-  modalItem: Object;
+  modalItem: ZoneProps;
 }
 
 const MapQuickViewModal: React.FC<MapQuickViewModalProps> = ({
@@ -13,7 +15,7 @@ const MapQuickViewModal: React.FC<MapQuickViewModalProps> = ({
   setShowModal,
   modalItem,
 }) => {
-  const modalItemValues: Object = Object.values(modalItem)[0];
+  const zoneIcons: ZoneIconProps = modalItem?.zoneData?.zoneIcons;
   return (
     <Modal animationType="slide" transparent={true} visible={showModal}>
       <View style={styles.modalContainerStyles}>
@@ -28,29 +30,51 @@ const MapQuickViewModal: React.FC<MapQuickViewModalProps> = ({
             </Text>
           </View>
           <View style={styles.modalInfoOptionsContainer}>
-            {modalItemValues?.zoneIcons?.lateChoreNumber > 0 && (
-              <TouchableOpacity>
-                <Text> {modalItemValues?.zoneIcons?.dayChoreNumber}</Text>
-              </TouchableOpacity>
+            {zoneIcons?.lateChoreNumber && zoneIcons?.lateChoreNumber > 0 && (
+              // <TouchableOpacity>
+              //   <Text> {zoneIcons?.dayChoreNumber}</Text>
+              // </TouchableOpacity>
+              <QuickViewModalOptionCard
+                cardType={'lateChoreNumber'}
+                itemNumber={zoneIcons?.lateChoreNumber}
+              />
             )}
-            {modalItemValues?.zoneIcons?.dayChoreNumber > 0 && (
-              <TouchableOpacity>
-                <Text> {modalItemValues?.zoneIcons?.dayChoreNumber}</Text>
-              </TouchableOpacity>
+            {zoneIcons?.dayChoreNumber && zoneIcons?.dayChoreNumber > 0 && (
+              // <TouchableOpacity>
+              //   <Text> {zoneIcons?.dayChoreNumber}</Text>
+              // </TouchableOpacity>
+              <QuickViewModalOptionCard
+                cardType={'dayChoreNumber'}
+                itemNumber={zoneIcons?.dayChoreNumber}
+              />
             )}
-            {modalItemValues?.zoneIcons?.lateHarvestNumber > 0 && (
-              <View>
-                <Text> {modalItemValues?.zoneIcons?.dayHarvestNumber}</Text>
-              </View>
+            {zoneIcons?.lateHarvestNumber &&
+              zoneIcons?.lateHarvestNumber > 0 && (
+                // <View>
+                //   <Text> {zoneIcons?.lateHarvestNumber}</Text>
+                // </View>
+                <QuickViewModalOptionCard
+                  cardType={'lateHarvestNumber'}
+                  itemNumber={zoneIcons?.lateHarvestNumber}
+                />
+              )}
+            {zoneIcons?.dayHarvestNumber && zoneIcons?.dayHarvestNumber > 0 && (
+              // <TouchableOpacity>
+              //   <Text> {zoneIcons?.dayHarvestNumber}</Text>
+              // </TouchableOpacity>
+              <QuickViewModalOptionCard
+                cardType={'dayHarvestNumber'}
+                itemNumber={zoneIcons?.dayHarvestNumber}
+              />
             )}
-            {modalItemValues?.zoneIcons?.dayChoreNumber > 0 && (
-              <TouchableOpacity>
-                <Text> {modalItemValues?.zoneIcons?.dayChoreNumber}</Text>
-              </TouchableOpacity>
-            )}
-            <TouchableOpacity>
-              <Text> {modalItemValues?.zoneIcons?.dayChoreNumber}</Text>
-            </TouchableOpacity>
+            {/* <TouchableOpacity>
+              <Text> {zoneIcons?.emptyrowNumber}</Text>
+              <Text>See Row</Text>
+            </TouchableOpacity> */}
+            <QuickViewModalOptionCard
+              cardType={'emptyrowNumber'}
+              itemNumber={zoneIcons?.emptyrowNumber}
+            />
           </View>
         </View>
       </View>
@@ -71,7 +95,10 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'transparent',
   },
-  modalInfoCardcontainer: {flexDirection: 'column'},
+  modalInfoCardcontainer: {
+    flexDirection: 'column',
+    backgroundColor: appColors.white,
+  },
   modalInfoTitleContainer: {
     backgroundColor: appColors.fadedGreen,
     width: '100%',
