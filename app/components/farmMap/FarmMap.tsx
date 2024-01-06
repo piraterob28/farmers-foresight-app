@@ -10,13 +10,14 @@ import {ZoneProps} from '../../types/zoneTypes';
 
 interface FarmMapProps {
   store: FarmMapQuickStore;
+  navigation: object;
 }
 
 interface onUpdatePanResponderProps {
   (panRef: any, setPanState: Function, currentZone: ZoneProps): void;
 }
 
-const FarmMap: React.FC<FarmMapProps> = observer(({store}) => {
+const FarmMap: React.FC<FarmMapProps> = observer(({store, navigation}) => {
   const [showModal, setShowModal] = useState(false);
   const [modalItem, setModalItem] = useState({});
 
@@ -79,6 +80,7 @@ const FarmMap: React.FC<FarmMapProps> = observer(({store}) => {
         showModal={showModal}
         setShowModal={setShowModal}
         modalItem={modalItem}
+        navigation={navigation}
       />
       <MapBackgroundGrid isEditMode={store.isEditMode} />
       {store.farmZoneData.map((farmZone, index: number) => {

@@ -8,14 +8,16 @@ interface MapQuickViewModalProps {
   showModal: boolean;
   setShowModal: Function;
   modalItem: ZoneProps;
+  navigation: object;
 }
 
 const MapQuickViewModal: React.FC<MapQuickViewModalProps> = ({
   showModal = false,
   setShowModal,
   modalItem,
+  navigation,
 }) => {
-  const zoneIcons: ZoneIconProps = modalItem?.zoneData?.zoneIcons;
+  const zoneIcons: ZoneIconProps | undefined = modalItem?.zoneData?.zoneIcons;
   return (
     <Modal animationType="slide" transparent={true} visible={showModal}>
       <View style={styles.modalContainerStyles}>
@@ -26,23 +28,17 @@ const MapQuickViewModal: React.FC<MapQuickViewModalProps> = ({
         <View style={styles.modalInfoCardcontainer}>
           <View style={styles.modalInfoTitleContainer}>
             <Text style={styles.modalInfoTitleText}>
-              {Object.keys(modalItem)[0]}
+              Zone {modalItem?.zoneNumber}
             </Text>
           </View>
           <View style={styles.modalInfoOptionsContainer}>
             {zoneIcons?.lateChoreNumber && zoneIcons?.lateChoreNumber > 0 && (
-              // <TouchableOpacity>
-              //   <Text> {zoneIcons?.dayChoreNumber}</Text>
-              // </TouchableOpacity>
               <QuickViewModalOptionCard
                 cardType={'lateChoreNumber'}
                 itemNumber={zoneIcons?.lateChoreNumber}
               />
             )}
             {zoneIcons?.dayChoreNumber && zoneIcons?.dayChoreNumber > 0 && (
-              // <TouchableOpacity>
-              //   <Text> {zoneIcons?.dayChoreNumber}</Text>
-              // </TouchableOpacity>
               <QuickViewModalOptionCard
                 cardType={'dayChoreNumber'}
                 itemNumber={zoneIcons?.dayChoreNumber}
@@ -50,30 +46,21 @@ const MapQuickViewModal: React.FC<MapQuickViewModalProps> = ({
             )}
             {zoneIcons?.lateHarvestNumber &&
               zoneIcons?.lateHarvestNumber > 0 && (
-                // <View>
-                //   <Text> {zoneIcons?.lateHarvestNumber}</Text>
-                // </View>
                 <QuickViewModalOptionCard
                   cardType={'lateHarvestNumber'}
                   itemNumber={zoneIcons?.lateHarvestNumber}
                 />
               )}
             {zoneIcons?.dayHarvestNumber && zoneIcons?.dayHarvestNumber > 0 && (
-              // <TouchableOpacity>
-              //   <Text> {zoneIcons?.dayHarvestNumber}</Text>
-              // </TouchableOpacity>
               <QuickViewModalOptionCard
                 cardType={'dayHarvestNumber'}
                 itemNumber={zoneIcons?.dayHarvestNumber}
               />
             )}
-            {/* <TouchableOpacity>
-              <Text> {zoneIcons?.emptyrowNumber}</Text>
-              <Text>See Row</Text>
-            </TouchableOpacity> */}
             <QuickViewModalOptionCard
               cardType={'emptyrowNumber'}
               itemNumber={zoneIcons?.emptyrowNumber}
+              navigation={navigation}
             />
           </View>
         </View>
@@ -100,12 +87,12 @@ const styles = StyleSheet.create({
     backgroundColor: appColors.white,
   },
   modalInfoTitleContainer: {
-    backgroundColor: appColors.fadedGreen,
+    backgroundColor: appColors.darkGreen,
     width: '100%',
     paddingVertical: 8,
   },
   modalInfoTitleText: {
-    fontSize: 30,
+    fontSize: 36,
     fontWeight: '900',
     color: appColors.white,
     textAlign: 'center',

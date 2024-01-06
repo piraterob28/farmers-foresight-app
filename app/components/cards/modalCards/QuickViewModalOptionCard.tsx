@@ -16,23 +16,31 @@ interface QuickViewModalOptionCardProps {
     | 'dayHarvestNumber'
     | 'emptyrowNumber';
   itemNumber: number;
+  navigation: any;
 }
 
-const cardRenderInfo: Object = {
-  lateChoreNumber: {image: <ChecksRed />, text: 'Late Chores'},
-  dayChoreNumber: {image: <ChecksGreen />, text: "Day's Chores"},
-  lateHarvestNumber: {image: <CropsRed />, text: 'Late Harvests'},
-  dayHarvestNumber: {image: <CropsGreen />, text: "Day's Harvests"},
-  emptyrowNumber: {image: <EmptyRows />, text: 'Empty Rows'},
-};
+const QuickViewModalOptionCard = ({cardType, itemNumber, navigation}) => {
+  const cardRenderInfo: Object = {
+    lateChoreNumber: {image: <ChecksRed />, text: 'Late Chores:'},
+    dayChoreNumber: {image: <ChecksGreen />, text: "Day's Chores:"},
+    lateHarvestNumber: {image: <CropsRed />, text: 'Late Harvests:'},
+    dayHarvestNumber: {image: <CropsGreen />, text: "Day's Harvests:"},
+    emptyrowNumber: {
+      image: <EmptyRows />,
+      text: itemNumber > 0 ? 'Empty Rows:' : 'Edit Rows',
+    },
+  };
 
-const QuickViewModalOptionCard = ({cardType, itemNumber}) => {
   return (
-    <TouchableOpacity style={styles.cardContainer}>
+    <TouchableOpacity
+      style={styles.cardContainer}
+      onPress={() => {
+        navigation.navigate('ZoneView');
+      }}>
       <View>{cardRenderInfo[cardType]?.image}</View>
       <View style={styles.cardInfoContainer}>
         <Text style={styles.cardInfoText}>
-          {cardRenderInfo[cardType]?.text}: {itemNumber}
+          {cardRenderInfo[cardType]?.text} {itemNumber}
         </Text>
       </View>
       <View>

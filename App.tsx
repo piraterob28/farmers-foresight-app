@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -7,6 +7,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import FarmMapQuickView from './app/views/FarmMapQuickView';
 import FarmTaskListView from './app/views/FarmTaskListView';
 import ZoneView from './app/views/ZoneView';
+import ZoneListView from './app/views/ZoneListView';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import TabNavButton from './app/components/buttons/TabNavButton';
 import appColors from './app/styles/colors';
@@ -22,7 +23,6 @@ const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
 function HomeTabNav(): React.JSX.Element {
-  const stores = useStore();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -31,10 +31,42 @@ function HomeTabNav(): React.JSX.Element {
           height: 90,
           paddingBottom: 40,
         },
-        // headerShown: false,
+        headerShown: false,
       }}>
       <Tab.Screen
-        name="Quick View"
+        name="FarmMapTab"
+        options={{
+          tabBarShowLabel: false,
+          tabBarIcon: ({focused}) => (
+            <TabNavButton icon="eye" active={focused} />
+          ),
+        }}
+        component={HomeMapStackNavigator}
+      />
+      <Tab.Screen
+        name="FarmListTab"
+        component={HomeListStackNavigator}
+        options={{
+          tabBarShowLabel: false,
+          tabBarIcon: ({focused}) => (
+            <TabNavButton icon="checks" active={focused} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
+
+const HomeMapStackNavigator = (): React.JSX.Element => {
+  const stores = useStore();
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        // headerShown: false,
+        headerBackTitleVisible: false,
+      }}>
+      <Stack.Screen
+        name="FarmMapView"
         options={{
           headerTitle: () => (
             <HeaderTitle text={'Map Quick View'} image={'task'} />
@@ -49,17 +81,27 @@ function HomeTabNav(): React.JSX.Element {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
-          tabBarShowLabel: false,
-          tabBarIcon: ({focused}) => (
-            <TabNavButton icon="eye" active={focused} />
-          ),
         }}>
         {props => (
-          <FarmMapQuickView {...props} store={stores.farmMapQuickStore} />
+          <FarmMapQuickView store={stores.farmMapQuickStore} {...props} />
         )}
-      </Tab.Screen>
-      <Tab.Screen
-        name="Farm List View"
+      </Stack.Screen>
+      <Stack.Screen name="ZoneView" options={{}}>
+        {props => <ZoneView text={'Hello Zone View'} {...props} />}
+      </Stack.Screen>
+    </Stack.Navigator>
+  );
+};
+
+const HomeListStackNavigator = (): React.JSX.Element => {
+  const stores = useStore();
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: true,
+      }}>
+      <Stack.Screen
+        name="FarmListView"
         options={{
           headerTitle: () => (
             <HeaderTitle text={'Farm List View'} image={'task'} />
@@ -71,16 +113,14 @@ function HomeTabNav(): React.JSX.Element {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
-          tabBarShowLabel: false,
-          tabBarIcon: ({focused}) => (
-            <TabNavButton icon="checks" active={focused} />
-          ),
         }}>
-        {() => <FarmTaskListView text={'Hello'} />}
-      </Tab.Screen>
-    </Tab.Navigator>
+        {props => (
+          <FarmTaskListView text={'Hello Farm Task List View'} {...props} />
+        )}
+      </Stack.Screen>
+    </Stack.Navigator>
   );
-}
+};
 
 const ZoneStackNavigator = (): React.JSX.Element => {
   return (
@@ -90,6 +130,19 @@ const ZoneStackNavigator = (): React.JSX.Element => {
           // headerShown: false,
         }
       }>
+      <Stack.Screen
+        name="Zone List View"
+        options={{
+          headerStyle: {
+            backgroundColor: '#ffffff',
+          },
+          headerTintColor: appColors.darkGreen,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}>
+        {props => <ZoneListView text={'Hello ZonelistView'} {...props} />}
+      </Stack.Screen>
       <Stack.Screen
         name="Zone View"
         options={{
@@ -101,7 +154,7 @@ const ZoneStackNavigator = (): React.JSX.Element => {
             fontWeight: 'bold',
           },
         }}>
-        {() => <ZoneView text={'Hello'} />}
+        {props => <ZoneView text={'Hello ZoneView'} {...props} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

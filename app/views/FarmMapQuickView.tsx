@@ -14,7 +14,7 @@ const FarmMapQuickView: React.FC<FarmMapQuickViewProps> = observer(
   ({navigation, route, store}) => {
     return (
       <View style={{}}>
-        <FarmMap store={store} />
+        <FarmMap store={store} navigation={navigation} />
       </View>
     );
   },
