@@ -18,7 +18,7 @@ const MapQuickViewModal: React.FC<MapQuickViewModalProps> = ({
   navigation,
 }) => {
   const zoneIcons: ZoneIconProps | undefined = modalItem?.zoneData?.zoneIcons;
-  const [animationType, setAnimationType] = useState('slide');
+  const [animationType, setAnimationType] = useState<'slide' | 'none'>('slide');
   return (
     <Modal
       animationType={animationType}

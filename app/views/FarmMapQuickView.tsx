@@ -6,12 +6,11 @@ import FarmMap from '../components/farmMap/FarmMap';
 
 interface FarmMapQuickViewProps {
   navigation: object;
-  route: object;
   store: FarmMapQuickStore;
 }
 
 const FarmMapQuickView: React.FC<FarmMapQuickViewProps> = observer(
-  ({navigation, route, store}) => {
+  ({navigation, store}) => {
     return (
       <View style={{}}>
         <FarmMap store={store} navigation={navigation} />

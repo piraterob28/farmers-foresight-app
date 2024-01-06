@@ -2,12 +2,14 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import ZoneStore from '../stores/ZoneStore';
 import React from 'react';
 import appColors from '../styles/colors';
+import {observer} from 'mobx-react';
 
 interface ZoneViewProps {
   store: ZoneStore;
+  navigation: Object;
 }
 
-const ZoneView: React.FC<ZoneViewProps> = ({store, navigation}) => {
+const ZoneView: React.FC<ZoneViewProps> = observer(({store, navigation}) => {
   return (
     <View style={styles.zoneViewContainer}>
       <View style={styles.desctiptionAreaContainer}>
@@ -21,7 +23,7 @@ const ZoneView: React.FC<ZoneViewProps> = ({store, navigation}) => {
       </View>
     </View>
   );
-};
+});
 
 export default ZoneView;
 
