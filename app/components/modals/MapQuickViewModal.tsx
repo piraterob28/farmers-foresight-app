@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, Modal, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import appColors from '../../styles/colors';
 import {ZoneProps, ZoneIconProps} from '../../types/zoneTypes';
 import QuickViewModalOptionCard from '../cards/modalCards/QuickViewModalOptionCard';
@@ -18,8 +18,14 @@ const MapQuickViewModal: React.FC<MapQuickViewModalProps> = ({
   navigation,
 }) => {
   const zoneIcons: ZoneIconProps | undefined = modalItem?.zoneData?.zoneIcons;
+  const [animationType, setAnimationType] = useState('slide');
   return (
-    <Modal animationType="slide" transparent={true} visible={showModal}>
+    <Modal
+      animationType={animationType}
+      onShow={() => setAnimationType('none')}
+      onDismiss={() => setAnimationType('slide')}
+      transparent={true}
+      visible={showModal}>
       <View style={styles.modalContainerStyles}>
         <TouchableOpacity
           onPress={() => setShowModal(false)}
@@ -36,12 +42,16 @@ const MapQuickViewModal: React.FC<MapQuickViewModalProps> = ({
               <QuickViewModalOptionCard
                 cardType={'lateChoreNumber'}
                 itemNumber={zoneIcons?.lateChoreNumber}
+                navigation={navigation}
+                setShowModal={() => setShowModal(false)}
               />
             )}
             {zoneIcons?.dayChoreNumber && zoneIcons?.dayChoreNumber > 0 && (
               <QuickViewModalOptionCard
                 cardType={'dayChoreNumber'}
                 itemNumber={zoneIcons?.dayChoreNumber}
+                navigation={navigation}
+                setShowModal={() => setShowModal(false)}
               />
             )}
             {zoneIcons?.lateHarvestNumber &&
@@ -49,18 +59,23 @@ const MapQuickViewModal: React.FC<MapQuickViewModalProps> = ({
                 <QuickViewModalOptionCard
                   cardType={'lateHarvestNumber'}
                   itemNumber={zoneIcons?.lateHarvestNumber}
+                  navigation={navigation}
+                  setShowModal={() => setShowModal(false)}
                 />
               )}
             {zoneIcons?.dayHarvestNumber && zoneIcons?.dayHarvestNumber > 0 && (
               <QuickViewModalOptionCard
                 cardType={'dayHarvestNumber'}
                 itemNumber={zoneIcons?.dayHarvestNumber}
+                navigation={navigation}
+                setShowModal={() => setShowModal(false)}
               />
             )}
             <QuickViewModalOptionCard
               cardType={'emptyrowNumber'}
               itemNumber={zoneIcons?.emptyrowNumber}
               navigation={navigation}
+              setShowModal={() => setShowModal(false)}
             />
           </View>
         </View>

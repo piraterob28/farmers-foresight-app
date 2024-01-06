@@ -87,7 +87,7 @@ const HomeMapStackNavigator = (): React.JSX.Element => {
         )}
       </Stack.Screen>
       <Stack.Screen name="ZoneView" options={{}}>
-        {props => <ZoneView text={'Hello Zone View'} {...props} />}
+        {props => <ZoneView store={stores.zoneStore} {...props} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

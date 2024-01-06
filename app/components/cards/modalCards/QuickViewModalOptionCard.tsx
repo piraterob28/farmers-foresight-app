@@ -17,9 +17,15 @@ interface QuickViewModalOptionCardProps {
     | 'emptyrowNumber';
   itemNumber: number;
   navigation: any;
+  setShowModal: Function;
 }
 
-const QuickViewModalOptionCard = ({cardType, itemNumber, navigation}) => {
+const QuickViewModalOptionCard: React.FC<QuickViewModalOptionCardProps> = ({
+  cardType,
+  itemNumber,
+  navigation,
+  setShowModal,
+}) => {
   const cardRenderInfo: Object = {
     lateChoreNumber: {image: <ChecksRed />, text: 'Late Chores:'},
     dayChoreNumber: {image: <ChecksGreen />, text: "Day's Chores:"},
@@ -36,6 +42,7 @@ const QuickViewModalOptionCard = ({cardType, itemNumber, navigation}) => {
       style={styles.cardContainer}
       onPress={() => {
         navigation.navigate('ZoneView');
+        setShowModal(false);
       }}>
       <View>{cardRenderInfo[cardType]?.image}</View>
       <View style={styles.cardInfoContainer}>
