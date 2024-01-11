@@ -2515,6 +2515,11 @@ anymatch@^3.0.3:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
+apollo-link-logger@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/apollo-link-logger/-/apollo-link-logger-2.0.1.tgz#63d86b4fe550c147c5a52108710075675694905c"
+  integrity sha512-4KkdwCqWtlOc0vx0W/5o+UfotyZtcJZicraKNyo2KTaCmAGSJ8vDnNRyDlv6o5XtSgdv4NA36cSe6dt49OkGWA==
+
 appdirsjs@^1.2.4:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/appdirsjs/-/appdirsjs-1.2.7.tgz#50b4b7948a26ba6090d4aede2ae2dc2b051be3b3"

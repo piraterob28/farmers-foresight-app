@@ -19,6 +19,7 @@
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
     "@react-navigation/stack": "^6.3.20",
+    "apollo-link-logger": "^2.0.1",
     "graphql": "^16.8.1",
     "mobx": "^6.12.0",
     "mobx-react": "^9.1.0",
