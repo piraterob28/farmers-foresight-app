@@ -28,10 +28,10 @@ const FarmMap: React.FC<FarmMapProps> = observer(({store, navigation}) => {
   }) => {
     let isInterSecting: boolean = false;
     store.farmZoneData.forEach(zone => {
-      const zoneValues = zone?.zoneData;
-      const currentZoneValues = currentZone?.zoneData;
+      const zoneValues = zone;
+      const currentZoneValues = currentZone;
 
-      if (zone?.zoneNumber !== currentZone?.zoneNumber) {
+      if (zone?.farmZoneNumber !== currentZone?.farmZoneNumber) {
         const zoneXExtended = zoneValues.mapX + zoneValues.width * 1.5;
         const zoneYExtended = zoneValues.mapY + zoneValues.length * 1.5;
 
@@ -83,18 +83,20 @@ const FarmMap: React.FC<FarmMapProps> = observer(({store, navigation}) => {
         navigation={navigation}
       />
       <MapBackgroundGrid isEditMode={store.isEditMode} />
-      {store.farmZoneData.map((farmZone, index: number) => {
-        return (
-          <FarmMapItem
-            key={index}
-            mapItem={farmZone}
-            onItemSelect={onMapItemPress}
-            onUpdatePanResponder={onUpdatePanResponder}
-            onCompletePanResponder={store.updateZoneData}
-            isEditMode={store.isEditMode}
-          />
-        );
-      })}
+      {!!store.farmZoneData &&
+        store.farmZoneData?.length > 0 &&
+        store.farmZoneData.map((farmZone, index: number) => {
+          return (
+            <FarmMapItem
+              key={index}
+              mapItem={farmZone}
+              onItemSelect={onMapItemPress}
+              onUpdatePanResponder={onUpdatePanResponder}
+              onCompletePanResponder={store.updateZoneData}
+              isEditMode={store.isEditMode}
+            />
+          );
+        })}
     </View>
   );
 });

@@ -1,14 +1,17 @@
 interface ZoneProps {
-  zoneNumber: number;
-  zoneData: ZoneDataProps;
-}
-
-interface ZoneDataProps {
-  zoneType: 'outside' | 'inside';
+  id: number;
+  farmId: number;
+  farmZoneNumber: number;
+  zoneName: string;
   length: number;
   width: number;
   mapX: number;
   mapY: number;
+  indoor: boolean;
+  covered: boolean;
+  insertedAt: string;
+  updateAt: string;
+  active: boolean;
   zoneIcons?: ZoneIconProps;
 }
 
@@ -20,4 +23,4 @@ interface ZoneIconProps {
   emptyrowNumber?: number;
 }
 
-export {ZoneProps, ZoneDataProps, ZoneIconProps};
+export {ZoneProps, ZoneIconProps};

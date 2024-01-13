@@ -28,9 +28,11 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
     onItemSelect,
   }) => {
     const [isDisabledState, setIsDisabledState] = useState(false);
-    const mapItemData = mapItem?.zoneData;
+    const mapItemData = mapItem;
     const isDisabledStateRef = React.useRef(isDisabledState);
     const isEditModeRef = React.useRef(isEditMode);
+
+    console.log('farmmapitem', mapItem);
 
     React.useEffect(() => {
       isDisabledStateRef.current = isDisabledState;
@@ -75,7 +77,7 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
                 mapX: pan1.x.__getValue(),
                 mapY: pan1.y.__getValue(),
               },
-              mapItem.zoneNumber,
+              mapItem.farmZoneNumber,
             );
           }
         },
@@ -91,7 +93,7 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
           isDisabledState ? {zIndex: 100} : {zIndex: 1},
         ]}
         {...panResponder1.panHandlers}>
-        {mapItemData?.zoneType === 'outside' && (
+        {!mapItemData?.indoor && (
           <TouchableOpacity
             disabled={isEditMode}
             onPress={() => {
@@ -100,8 +102,8 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
             style={[
               {
                 ...styles.outsidePlot,
-                height: mapItemData.length * 1.5,
-                width: mapItemData.width * 1.5,
+                height: (mapItemData.length * 1.5) / 12,
+                width: (mapItemData.width * 1.5) / 12,
               },
               !!isDisabledState && {
                 backgroundColor: 'red',
@@ -113,7 +115,7 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
             )}
           </TouchableOpacity>
         )}
-        {mapItemData?.zoneType === 'inside' && (
+        {mapItemData?.indoor && (
           <TouchableOpacity
             disabled={isEditMode}
             onPress={() => {
