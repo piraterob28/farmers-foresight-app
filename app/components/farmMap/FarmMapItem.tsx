@@ -37,7 +37,7 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
       isEditModeRef.current = isEditMode;
     }, [isDisabledState, isEditMode]);
 
-    let tempPan: Object;
+    let tempPan: {x: number; y: number};
 
     const pan1 = useRef(
       new Animated.ValueXY({x: mapItemData.mapX, y: mapItemData.mapY}),

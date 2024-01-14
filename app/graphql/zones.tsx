@@ -26,4 +26,19 @@ const getZonesQuickView:
   }
 `;
 
-export {getZonesQuickView};
+const setZonesQuickView:
+  | DocumentNode
+  | TypedDocumentNode<any, OperationVariables> = gql`
+  mutation setZonesQuickView($zonesToUpdate: [ZoneProps]!) {
+    setZonesQuickView(zonesToUpdate: $zonesToUpdate) {
+      id
+      length
+      mapX
+      mapY
+      updatedAt
+      width
+    }
+  }
+`;
+
+export {getZonesQuickView, setZonesQuickView};

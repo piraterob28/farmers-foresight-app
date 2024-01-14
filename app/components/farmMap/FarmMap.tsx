@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, Modal, Text, TouchableOpacity} from 'react-native';
-import appColors from '../../styles/colors';
+import {View, StyleSheet} from 'react-native';
 import FarmMapItem from './FarmMapItem';
 import MapBackgroundGrid from '../grids/mapBackgroundGrid';
 import FarmMapQuickStore from '../../stores/FarmMapQuickStore';
@@ -18,8 +17,8 @@ interface onUpdatePanResponderProps {
 }
 
 const FarmMap: React.FC<FarmMapProps> = observer(({store, navigation}) => {
-  const [showModal, setShowModal] = useState(false);
-  const [modalItem, setModalItem] = useState({});
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [modalItem, setModalItem] = useState<ZoneProps | undefined>();
 
   const onUpdatePanResponder: onUpdatePanResponderProps = ({
     panRef,
@@ -40,6 +39,7 @@ const FarmMap: React.FC<FarmMapProps> = observer(({store, navigation}) => {
         const currentZoneYExtended =
           panRef.y.__getValue() + (currentZoneValues.length * 1.5) / 12;
 
+        // eslint-disable-next-line no-lone-blocks
         {
           /*Check for the cases where the rectangles are definitely not intersecting.
           If none of these cases are true then the rectangles must intersect.
@@ -69,7 +69,7 @@ const FarmMap: React.FC<FarmMapProps> = observer(({store, navigation}) => {
     setPanState(isInterSecting);
   };
 
-  const onMapItemPress = (mapItem: Object) => {
+  const onMapItemPress = (mapItem: ZoneProps | undefined) => {
     setModalItem(mapItem);
     setShowModal(true);
   };

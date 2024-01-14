@@ -7,7 +7,7 @@ import QuickViewModalOptionCard from '../cards/modalCards/QuickViewModalOptionCa
 interface MapQuickViewModalProps {
   showModal: boolean;
   setShowModal: Function;
-  modalItem: ZoneProps;
+  modalItem: ZoneProps | undefined;
   navigation: object;
 }
 
