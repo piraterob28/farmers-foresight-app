@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, Modal, Text, Touchable} from 'react-native';
+import {View, StyleSheet, Modal, Text, TouchableOpacity} from 'react-native';
 import appColors from '../../styles/colors';
 import FarmMapItem from './FarmMapItem';
 import MapBackgroundGrid from '../grids/mapBackgroundGrid';
@@ -32,13 +32,13 @@ const FarmMap: React.FC<FarmMapProps> = observer(({store, navigation}) => {
       const currentZoneValues = currentZone;
 
       if (zone?.farmZoneNumber !== currentZone?.farmZoneNumber) {
-        const zoneXExtended = zoneValues.mapX + zoneValues.width * 1.5;
-        const zoneYExtended = zoneValues.mapY + zoneValues.length * 1.5;
+        const zoneXExtended = zoneValues.mapX + (zoneValues.width * 1.5) / 12;
+        const zoneYExtended = zoneValues.mapY + (zoneValues.length * 1.5) / 12;
 
         const currentZoneXExtended =
-          panRef.x.__getValue() + currentZoneValues.width * 1.5;
+          panRef.x.__getValue() + (currentZoneValues.width * 1.5) / 12;
         const currentZoneYExtended =
-          panRef.y.__getValue() + currentZoneValues.length * 1.5;
+          panRef.y.__getValue() + (currentZoneValues.length * 1.5) / 12;
 
         {
           /*Check for the cases where the rectangles are definitely not intersecting.
@@ -73,7 +73,6 @@ const FarmMap: React.FC<FarmMapProps> = observer(({store, navigation}) => {
     setModalItem(mapItem);
     setShowModal(true);
   };
-
   return (
     <View style={styles.container}>
       <MapQuickViewModal
@@ -83,8 +82,7 @@ const FarmMap: React.FC<FarmMapProps> = observer(({store, navigation}) => {
         navigation={navigation}
       />
       <MapBackgroundGrid isEditMode={store.isEditMode} />
-      {!!store.farmZoneData &&
-        store.farmZoneData?.length > 0 &&
+      {store.farmZoneData &&
         store.farmZoneData.map((farmZone, index: number) => {
           return (
             <FarmMapItem

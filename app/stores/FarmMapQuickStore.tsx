@@ -1,4 +1,4 @@
-import {makeAutoObservable, observable, action} from 'mobx';
+import {makeAutoObservable, observable, action, isObservableArray} from 'mobx';
 import {RootStore} from './RootStore';
 import {ZoneProps, ZoneDataProps} from '../types/zoneTypes';
 import {client} from '../util/apolloClient';
@@ -10,21 +10,20 @@ class FarmMapQuickStore {
   isEditMode: boolean = false;
   rootStore: RootStore;
   testText: string;
-  farmZoneData: ZoneProps[];
+  farmZoneData: ZoneProps[] = observable.array();
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this, {
       isLoading: observable,
       isEditMode: observable,
       testText: observable,
+      farmZoneData: observable,
       setEditMode: action,
       updateZoneData: action,
       rootStore: false,
-      farmZoneData: observable,
     });
     this.rootStore = rootStore;
     this.testText = 'test test 45 28';
-    this.farmZoneData = [];
 
     this.getZoneData();
   }
@@ -41,7 +40,8 @@ class FarmMapQuickStore {
         fetchPolicy: 'no-cache',
         query: getZonesQuickView,
       });
-      this.farmZoneData = queryResult.data.getZonesQuickView;
+      const result = queryResult.data.getZonesQuickView;
+      this.farmZoneData = result;
     } catch (err) {
       console.log('get_zones failed', err);
     }

@@ -32,8 +32,6 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
     const isDisabledStateRef = React.useRef(isDisabledState);
     const isEditModeRef = React.useRef(isEditMode);
 
-    console.log('farmmapitem', mapItem);
-
     React.useEffect(() => {
       isDisabledStateRef.current = isDisabledState;
       isEditModeRef.current = isEditMode;
