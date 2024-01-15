@@ -3,6 +3,7 @@ import {RootStore} from './RootStore';
 import {ZoneProps} from '../types/zoneTypes';
 import {client} from '../util/apolloClient';
 import {getZonesQuickView, setZonesQuickView} from '../graphql/zones';
+import {objectWithoutKey} from '../util/objectUtils';
 
 class FarmMapQuickStore {
   isLoading: boolean = false;
@@ -62,10 +63,6 @@ class FarmMapQuickStore {
     });
 
     // Add edited map zones to variable in state until edit mode is ended then update db strip out __typename
-    const objectWithoutKey = (object: object, key: string): ZoneProps => {
-      const {[key]: deletedKey, ...otherKeys} = object;
-      return otherKeys;
-    };
 
     const i = this.editedZonesToSave?.findIndex(
       zone => zone?.id === updatedZone.id,
