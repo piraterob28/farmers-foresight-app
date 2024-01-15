@@ -54,7 +54,6 @@ class FarmMapQuickStore {
   updateZoneData = async (updatedZone: ZoneProps) => {
     // update the local state of zones for collision recognition
 
-    console.log('updateZoneData start');
     this.farmZoneData = this.farmZoneData.map(zone => {
       if (zone.farmZoneNumber === updatedZone.farmZoneNumber) {
         return updatedZone;
@@ -79,11 +78,9 @@ class FarmMapQuickStore {
     } else {
       this.editedZonesToSave = [...this.editedZonesToSave, scrubbedUpdatedZone];
     }
-    console.log('updateZoneData end');
   };
 
   saveZoneData = async () => {
-    console.log('saveZoneData');
     try {
       const queryResult = await client.mutate({
         errorPolicy: 'all',

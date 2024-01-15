@@ -29,17 +29,19 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
   }) => {
     const [isDisabledState, setIsDisabledState] = useState(false);
     const [canEditZone, setCanEditZone] = useState(false);
-    const mapItemData = mapItem;
+
     const isDisabledStateRef = React.useRef(isDisabledState);
     const canEditZoneRef = React.useRef(canEditZone);
+    const mapItemRef = React.useRef(mapItem);
 
     React.useEffect(() => {
       isDisabledStateRef.current = isDisabledState;
       canEditZoneRef.current = canEditZone;
-    }, [isDisabledState, canEditZone]);
+      mapItemRef.current = mapItem;
+    }, [isDisabledState, canEditZone, mapItem]);
 
     const pan1 = useRef(
-      new Animated.ValueXY({x: mapItemData.mapX, y: mapItemData.mapY}),
+      new Animated.ValueXY({x: mapItem.mapX, y: mapItem.mapY}),
     ).current;
 
     let tempPan: {x: number; y: number} = {
@@ -59,12 +61,11 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
           onUpdatePanResponder({
             panRef: pan1,
             setPanState: setIsDisabledState,
-            currentZone: mapItem,
+            currentZone: mapItemRef.current,
           });
         },
         onPanResponderRelease: () => {
           if (isDisabledStateRef.current) {
-            console.log('hit 1', isDisabledStateRef.current, tempPan);
             pan1.setOffset({x: 0, y: 0});
             pan1.setValue(tempPan);
             setIsDisabledState(false);
@@ -72,7 +73,7 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
             pan1.extractOffset();
 
             onCompletePanResponder({
-              ...mapItemData,
+              ...mapItemRef.current,
               mapX: pan1.x.__getValue(),
               mapY: pan1.y.__getValue(),
             });
@@ -90,12 +91,18 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
           isDisabledState ? {zIndex: 100} : {zIndex: 1},
         ]}
         {...panResponder1.panHandlers}>
-        {!mapItemData?.indoor && (
+        {!mapItem?.indoor && (
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() => {
               if (!isEditMode) {
                 onItemSelect(mapItem);
+              } else if (!canEditZone && isEditMode) {
+                onCompletePanResponder({
+                  ...mapItem,
+                  width: mapItem.length,
+                  length: mapItem.width,
+                });
               }
             }}
             onLongPress={() => {
@@ -105,20 +112,13 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
               }
             }}
             onPressOut={() => {
-              // if (!canEditZone && isEditMode) {
-              //   onCompletePanResponder({
-              //     ...mapItem,
-              //     width: mapItem.length,
-              //     length: mapItem.width,
-              //   });
-              // }
               setCanEditZone(false);
             }}
             style={[
               {
                 ...styles.outsidePlot,
-                height: (mapItemData.length * 1.5) / 12,
-                width: (mapItemData.width * 1.5) / 12,
+                height: (mapItem.length * 1.5) / 12,
+                width: (mapItem.width * 1.5) / 12,
               },
               !!canEditZone && {
                 opacity: 1,
@@ -128,12 +128,12 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
                 opacity: 0.5,
               },
             ]}>
-            {!!mapItemData.zoneIcons && (
-              <MapZoneIcons zoneIcons={mapItemData?.zoneIcons} />
+            {!!mapItem.zoneIcons && (
+              <MapZoneIcons zoneIcons={mapItem?.zoneIcons} />
             )}
           </TouchableOpacity>
         )}
-        {mapItemData?.indoor && (
+        {mapItem?.indoor && (
           <TouchableOpacity
             disabled={isEditMode}
             onPress={() => {
@@ -142,13 +142,13 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
             style={[
               {
                 ...styles.insidePlot,
-                height: mapItemData.length * 1.5,
-                width: mapItemData.width * 1.5,
+                height: mapItem.length * 1.5,
+                width: mapItem.width * 1.5,
               },
               !!isDisabledState && {backgroundColor: 'red'},
             ]}>
-            {!!mapItemData.zoneIcons && (
-              <MapZoneIcons zoneIcons={mapItemData?.zoneIcons} />
+            {!!mapItem.zoneIcons && (
+              <MapZoneIcons zoneIcons={mapItem?.zoneIcons} />
             )}
           </TouchableOpacity>
         )}
