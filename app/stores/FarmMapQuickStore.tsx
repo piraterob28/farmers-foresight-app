@@ -96,7 +96,7 @@ class FarmMapQuickStore {
     } catch (err) {
       console.log('setZonesQuickView failed', err);
     }
-    this.isLoading = false;
+    this.editedZonesToSave = [];
   };
 }
 

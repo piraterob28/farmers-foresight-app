@@ -28,29 +28,30 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
     onItemSelect,
   }) => {
     const [isDisabledState, setIsDisabledState] = useState(false);
+    const [canEditZone, setCanEditZone] = useState(false);
     const mapItemData = mapItem;
     const isDisabledStateRef = React.useRef(isDisabledState);
-    const isEditModeRef = React.useRef(isEditMode);
+    const canEditZoneRef = React.useRef(canEditZone);
 
     React.useEffect(() => {
       isDisabledStateRef.current = isDisabledState;
-      isEditModeRef.current = isEditMode;
-    }, [isDisabledState, isEditMode]);
-
-    let tempPan: {x: number; y: number};
+      canEditZoneRef.current = canEditZone;
+    }, [isDisabledState, canEditZone]);
 
     const pan1 = useRef(
       new Animated.ValueXY({x: mapItemData.mapX, y: mapItemData.mapY}),
     ).current;
 
+    let tempPan: {x: number; y: number} = {
+      x: pan1.x.__getValue(),
+      y: pan1.y.__getValue(),
+    };
+
     const panResponder1 = useRef(
       PanResponder.create({
-        onStartShouldSetPanResponder: () => isEditModeRef.current,
-        onMoveShouldSetPanResponder: () => isEditModeRef.current,
-        onPanResponderStart: () => {
-          pan1.extractOffset();
-          tempPan = {x: pan1.x.__getValue(), y: pan1.y.__getValue()};
-        },
+        onStartShouldSetPanResponder: () => canEditZoneRef.current,
+        onMoveShouldSetPanResponder: () => canEditZoneRef.current,
+        onPanResponderStart: () => {},
         onPanResponderMove: (event, gestureState) => {
           Animated.event([null, {dx: pan1.x, dy: pan1.y}], {
             useNativeDriver: false,
@@ -63,20 +64,18 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
         },
         onPanResponderRelease: () => {
           if (isDisabledStateRef.current) {
+            console.log('hit 1', isDisabledStateRef.current, tempPan);
             pan1.setOffset({x: 0, y: 0});
             pan1.setValue(tempPan);
             setIsDisabledState(false);
           } else {
             pan1.extractOffset();
 
-            onCompletePanResponder(
-              {
-                ...mapItemData,
-                mapX: pan1.x.__getValue(),
-                mapY: pan1.y.__getValue(),
-              },
-              mapItem.farmZoneNumber,
-            );
+            onCompletePanResponder({
+              ...mapItemData,
+              mapX: pan1.x.__getValue(),
+              mapY: pan1.y.__getValue(),
+            });
           }
         },
       }),
@@ -93,15 +92,36 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
         {...panResponder1.panHandlers}>
         {!mapItemData?.indoor && (
           <TouchableOpacity
-            disabled={isEditMode}
+            activeOpacity={0.5}
             onPress={() => {
-              onItemSelect(mapItem);
+              if (!isEditMode) {
+                onItemSelect(mapItem);
+              }
+            }}
+            onLongPress={() => {
+              if (isEditMode) {
+                setCanEditZone(true);
+                pan1.extractOffset();
+              }
+            }}
+            onPressOut={() => {
+              // if (!canEditZone && isEditMode) {
+              //   onCompletePanResponder({
+              //     ...mapItem,
+              //     width: mapItem.length,
+              //     length: mapItem.width,
+              //   });
+              // }
+              setCanEditZone(false);
             }}
             style={[
               {
                 ...styles.outsidePlot,
                 height: (mapItemData.length * 1.5) / 12,
                 width: (mapItemData.width * 1.5) / 12,
+              },
+              !!canEditZone && {
+                opacity: 1,
               },
               !!isDisabledState && {
                 backgroundColor: 'red',
