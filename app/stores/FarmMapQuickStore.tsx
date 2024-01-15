@@ -19,6 +19,7 @@ class FarmMapQuickStore {
       editedZonesToSave: observable,
       setEditMode: action,
       updateZoneData: action,
+      saveZoneData: action,
       rootStore: false,
     });
     this.rootStore = rootStore;
@@ -27,6 +28,10 @@ class FarmMapQuickStore {
   }
 
   setEditMode = () => {
+    if (this.isEditMode && this.editedZonesToSave.length > 0) {
+      this.saveZoneData();
+    }
+
     this.isEditMode = !this.isEditMode;
   };
 
@@ -41,15 +46,15 @@ class FarmMapQuickStore {
       const result = queryResult.data.getZonesQuickView;
       this.farmZoneData = result;
     } catch (err) {
-      console.log('get_zones failed', err);
+      console.log('getZonesQuickView failed', err);
     }
     this.isLoading = false;
   };
 
   updateZoneData = async (updatedZone: ZoneProps) => {
-    console.log('updatedZone', updatedZone);
-
     // update the local state of zones for collision recognition
+
+    console.log('updateZoneData start');
     this.farmZoneData = this.farmZoneData.map(zone => {
       if (zone.farmZoneNumber === updatedZone.farmZoneNumber) {
         return updatedZone;
@@ -57,32 +62,39 @@ class FarmMapQuickStore {
       return zone;
     });
 
-    // Add edited map zones to variable in state until edit mode is ended then update db
+    // Add edited map zones to variable in state until edit mode is ended then update db strip out __typename
+    const objectWithoutKey = (object: object, key: string): ZoneProps => {
+      const {[key]: deletedKey, ...otherKeys} = object;
+      return otherKeys;
+    };
+
     const i = this.editedZonesToSave?.findIndex(
       zone => zone?.id === updatedZone.id,
     );
 
+    const scrubbedUpdatedZone = objectWithoutKey(updatedZone, '__typename');
+
     if (i > -1) {
-      this.editedZonesToSave[i] = updatedZone;
+      this.editedZonesToSave[i] = scrubbedUpdatedZone;
     } else {
-      this.editedZonesToSave = [...this.editedZonesToSave, updatedZone];
+      this.editedZonesToSave = [...this.editedZonesToSave, scrubbedUpdatedZone];
     }
+    console.log('updateZoneData end');
   };
 
-  saveZoneData = async (zonesToUpdate: ZoneProps[]) => {
+  saveZoneData = async () => {
+    console.log('saveZoneData');
     try {
       const queryResult = await client.mutate({
         errorPolicy: 'all',
         fetchPolicy: 'no-cache',
         mutation: setZonesQuickView,
         variables: {
-          zonesToUpdate,
+          zonesToUpdate: this.editedZonesToSave,
         },
       });
-      const result = queryResult.data.getZonesQuickView;
-      this.farmZoneData = result;
     } catch (err) {
-      console.log('get_zones failed', err);
+      console.log('setZonesQuickView failed', err);
     }
     this.isLoading = false;
   };
