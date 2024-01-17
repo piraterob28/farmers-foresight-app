@@ -5,6 +5,7 @@ const appColors = {
   fadedGreen: '#A6BA7D',
   navBarGreen: '#D2E4B2',
   dirtBrown: '#C4A366',
+  offWhite: '#EDEDED',
   white: '#ffffff',
 };
 

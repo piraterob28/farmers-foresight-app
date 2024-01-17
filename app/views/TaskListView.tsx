@@ -2,6 +2,8 @@ import {StyleSheet, Text, View} from 'react-native';
 import TaskListStore from '../stores/TaskListStore';
 import React, {useEffect} from 'react';
 import {observer} from 'mobx-react';
+import TaskListFilterPills from '../components/filterPills/TaskListFilterPills';
+import appColors from '../styles/colors';
 
 interface TaskListViewProps {
   route: object;
@@ -16,7 +18,8 @@ const TaskListView: React.FC<TaskListViewProps> = observer(({route, store}) => {
   );
 
   return (
-    <View>
+    <View style={styles.taskListViewContainer}>
+      <TaskListFilterPills />
       <Text>TaskListView</Text>
     </View>
   );
@@ -24,4 +27,10 @@ const TaskListView: React.FC<TaskListViewProps> = observer(({route, store}) => {
 
 export default TaskListView;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  taskListViewContainer: {
+    backgroundColor: appColors.white,
+    width: '100%',
+    height: '100%',
+  },
+});
