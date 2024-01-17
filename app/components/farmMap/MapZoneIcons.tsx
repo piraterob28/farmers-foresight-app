@@ -7,6 +7,7 @@ import ChecksRed from '../../assets/icons/checks-red.svg';
 import EmptyRows from '../../assets/icons/rows.svg';
 
 interface MapZoneIconsProps {
+  isWiderThanTall: boolean;
   zoneIcons: {
     dayChoreNumber: number;
     lateChoreNumber: number;
@@ -16,9 +17,17 @@ interface MapZoneIconsProps {
   };
 }
 
-const MapZoneIcons: React.FC<MapZoneIconsProps> = ({zoneIcons}) => {
+const MapZoneIcons: React.FC<MapZoneIconsProps> = ({
+  zoneIcons,
+  isWiderThanTall,
+}) => {
   return (
-    <View style={styles.zoneIconsContainer}>
+    <View
+      style={
+        isWiderThanTall
+          ? styles.zoneIconsContainerWide
+          : styles.zoneIconsContainerTall
+      }>
       {zoneIcons.emptyrowNumber > 0 && (
         <View style={styles.iconContainer}>
           <EmptyRows height={18} width={18} />
@@ -51,13 +60,21 @@ const MapZoneIcons: React.FC<MapZoneIconsProps> = ({zoneIcons}) => {
 export default MapZoneIcons;
 
 const styles = StyleSheet.create({
-  zoneIconsContainer: {
+  zoneIconsContainerTall: {
+    flexDirection: 'column',
     height: '100%',
     paddingVertical: 10,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
+  zoneIconsContainerWide: {
+    flexDirection: 'row',
+    height: '100%',
+    paddingHorizontal: 10,
+    alignItems: 'center',
+  },
   iconContainer: {
     marginVertical: 2,
+    marginHorizontal: 2,
   },
 });

@@ -18,6 +18,7 @@ class FarmMapQuickStore {
       isEditMode: observable,
       farmZoneData: observable,
       editedZonesToSave: observable,
+      getZoneData: action,
       setEditMode: action,
       updateZoneData: action,
       saveZoneData: action,

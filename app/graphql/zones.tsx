@@ -22,6 +22,12 @@ const getZonesQuickView:
       mapY
       updatedAt
       width
+      zoneIcons {
+        dayChoreNumber
+        lateChoreNumber
+        dayHarvestNumber
+        lateHarvestNumber
+      }
     }
   }
 `;

@@ -29,6 +29,7 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
   }) => {
     const [isDisabledState, setIsDisabledState] = useState(false);
     const [canEditZone, setCanEditZone] = useState(false);
+    const [isWiderThanTall, setIsWiderThanTall] = useState(false);
 
     const isDisabledStateRef = React.useRef(isDisabledState);
     const canEditZoneRef = React.useRef(canEditZone);
@@ -38,6 +39,11 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
       isDisabledStateRef.current = isDisabledState;
       canEditZoneRef.current = canEditZone;
       mapItemRef.current = mapItem;
+      if (mapItem.width > mapItem.length) {
+        setIsWiderThanTall(true);
+      } else if (mapItem.width < mapItem.length) {
+        setIsWiderThanTall(false);
+      }
     }, [isDisabledState, canEditZone, mapItem]);
 
     const pan1 = useRef(
@@ -129,7 +135,10 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
               },
             ]}>
             {!!mapItem.zoneIcons && (
-              <MapZoneIcons zoneIcons={mapItem?.zoneIcons} />
+              <MapZoneIcons
+                zoneIcons={mapItem?.zoneIcons}
+                isWiderThanTall={isWiderThanTall}
+              />
             )}
           </TouchableOpacity>
         )}
@@ -142,13 +151,16 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
             style={[
               {
                 ...styles.insidePlot,
-                height: mapItem.length * 1.5,
-                width: mapItem.width * 1.5,
+                height: (mapItem.length * 1.5) / 12,
+                width: (mapItem.width * 1.5) / 12,
               },
               !!isDisabledState && {backgroundColor: 'red'},
             ]}>
             {!!mapItem.zoneIcons && (
-              <MapZoneIcons zoneIcons={mapItem?.zoneIcons} />
+              <MapZoneIcons
+                zoneIcons={mapItem?.zoneIcons}
+                isWiderThanTall={isWiderThanTall}
+              />
             )}
           </TouchableOpacity>
         )}
