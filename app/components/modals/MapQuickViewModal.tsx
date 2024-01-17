@@ -73,8 +73,8 @@ const MapQuickViewModal: React.FC<MapQuickViewModalProps> = ({
                 />
               )}
             <QuickViewModalOptionCard
-              cardType={'emptyrowNumber'}
-              itemNumber={zoneIcons?.emptyrowNumber}
+              cardType={'emptyRowNumber'}
+              itemNumber={zoneIcons?.emptyRowNumber}
               navigation={navigation}
               setShowModal={() => setShowModal(false)}
             />

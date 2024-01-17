@@ -12,8 +12,8 @@ interface MapZoneIconsProps {
     dayChoreNumber: number;
     lateChoreNumber: number;
     dayHarvestNumber: number;
-    lateharvestNumber: number;
-    emptyrowNumber: number;
+    lateHarvestNumber: number;
+    emptyRowNumber: number;
   };
 }
 
@@ -28,11 +28,6 @@ const MapZoneIcons: React.FC<MapZoneIconsProps> = ({
           ? styles.zoneIconsContainerWide
           : styles.zoneIconsContainerTall
       }>
-      {zoneIcons.emptyrowNumber > 0 && (
-        <View style={styles.iconContainer}>
-          <EmptyRows height={18} width={18} />
-        </View>
-      )}
       {zoneIcons.dayChoreNumber > 0 && (
         <View style={styles.iconContainer}>
           <ChecksGreen height={20} width={20} />
@@ -48,9 +43,14 @@ const MapZoneIcons: React.FC<MapZoneIconsProps> = ({
           <CropsGreen height={20} width={20} />
         </View>
       )}
-      {zoneIcons.lateharvestNumber > 0 && (
+      {zoneIcons.lateHarvestNumber > 0 && (
         <View style={styles.iconContainer}>
           <CropsRed height={20} width={20} />
+        </View>
+      )}
+      {zoneIcons.emptyRowNumber > 0 && (
+        <View style={styles.iconContainer}>
+          <EmptyRows height={18} width={18} />
         </View>
       )}
     </View>

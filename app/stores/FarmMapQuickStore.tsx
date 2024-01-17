@@ -69,12 +69,19 @@ class FarmMapQuickStore {
       zone => zone?.id === updatedZone.id,
     );
 
-    const scrubbedUpdatedZone = objectWithoutKey(updatedZone, '__typename');
+    const scrubbedUpdatedZone1 = objectWithoutKey(updatedZone, '__typename');
+    const scrubbedUpdatedZone2 = objectWithoutKey(
+      scrubbedUpdatedZone1,
+      'zoneIcons',
+    );
 
     if (i > -1) {
-      this.editedZonesToSave[i] = scrubbedUpdatedZone;
+      this.editedZonesToSave[i] = scrubbedUpdatedZone2;
     } else {
-      this.editedZonesToSave = [...this.editedZonesToSave, scrubbedUpdatedZone];
+      this.editedZonesToSave = [
+        ...this.editedZonesToSave,
+        scrubbedUpdatedZone2,
+      ];
     }
   };
 

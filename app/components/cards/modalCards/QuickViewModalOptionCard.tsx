@@ -14,7 +14,7 @@ interface QuickViewModalOptionCardProps {
     | 'dayChoreNumber'
     | 'lateHarvestNumber'
     | 'dayHarvestNumber'
-    | 'emptyrowNumber';
+    | 'emptyRowNumber';
   itemNumber: number;
   navigation: any;
   setShowModal: Function;
@@ -31,7 +31,7 @@ const QuickViewModalOptionCard: React.FC<QuickViewModalOptionCardProps> = ({
     dayChoreNumber: {image: <ChecksGreen />, text: "Day's Chores:"},
     lateHarvestNumber: {image: <CropsRed />, text: 'Late Harvests:'},
     dayHarvestNumber: {image: <CropsGreen />, text: "Day's Harvests:"},
-    emptyrowNumber: {
+    emptyRowNumber: {
       image: <EmptyRows />,
       text: itemNumber > 0 ? 'Empty Rows:' : 'Edit Rows',
     },
@@ -47,7 +47,7 @@ const QuickViewModalOptionCard: React.FC<QuickViewModalOptionCardProps> = ({
       <View>{cardRenderInfo[cardType]?.image}</View>
       <View style={styles.cardInfoContainer}>
         <Text style={styles.cardInfoText}>
-          {cardRenderInfo[cardType]?.text} {itemNumber}
+          {cardRenderInfo[cardType]?.text} {itemNumber > 0 && itemNumber}
         </Text>
       </View>
       <View>

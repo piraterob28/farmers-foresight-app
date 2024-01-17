@@ -27,6 +27,7 @@ const getZonesQuickView:
         lateChoreNumber
         dayHarvestNumber
         lateHarvestNumber
+        emptyRowNumber
       }
     }
   }

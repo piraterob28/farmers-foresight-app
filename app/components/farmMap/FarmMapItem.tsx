@@ -77,7 +77,7 @@ const FarmMapItem: React.FC<FarmMapItemProps> = observer(
             setIsDisabledState(false);
           } else {
             pan1.extractOffset();
-
+            tempPan = {x: pan1.x.__getValue(), y: pan1.y.__getValue()};
             onCompletePanResponder({
               ...mapItemRef.current,
               mapX: pan1.x.__getValue(),

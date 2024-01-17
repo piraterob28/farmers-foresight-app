@@ -20,7 +20,7 @@ interface ZoneIconProps {
   lateChoreNumber?: number;
   dayHarvestNumber?: number;
   lateHarvestNumber?: number;
-  emptyrowNumber?: number;
+  emptyRowNumber?: number;
 }
 
 export {ZoneProps, ZoneIconProps};
