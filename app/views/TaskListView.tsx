@@ -1,8 +1,20 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import TaskListStore from '../stores/TaskListStore';
+import React, {useEffect} from 'react';
 import {observer} from 'mobx-react';
 
-const TaskListView = observer(() => {
+interface TaskListViewProps {
+  route: object;
+  store: TaskListStore;
+}
+
+const TaskListView: React.FC<TaskListViewProps> = observer(({route, store}) => {
+  store.getTaskList(
+    (taskType = route?.params?.taskType),
+    (taskScope = route?.params?.taskScope),
+    (scopeId = route?.params?.scopeId),
+  );
+
   return (
     <View>
       <Text>TaskListView</Text>

@@ -7,7 +7,7 @@ import QuickViewModalOptionCard from '../cards/modalCards/QuickViewModalOptionCa
 interface MapQuickViewModalProps {
   showModal: boolean;
   setShowModal: Function;
-  modalItem: ZoneProps | undefined;
+  modalItem: ZoneProps;
   navigation: object;
 }
 
@@ -40,6 +40,7 @@ const MapQuickViewModal: React.FC<MapQuickViewModalProps> = ({
           <View style={styles.modalInfoOptionsContainer}>
             {!!zoneIcons?.lateChoreNumber && zoneIcons?.lateChoreNumber > 0 && (
               <QuickViewModalOptionCard
+                modalItem={modalItem}
                 cardType={'lateChoreNumber'}
                 itemNumber={zoneIcons?.lateChoreNumber}
                 navigation={navigation}
@@ -48,6 +49,7 @@ const MapQuickViewModal: React.FC<MapQuickViewModalProps> = ({
             )}
             {!!zoneIcons?.dayChoreNumber && zoneIcons?.dayChoreNumber > 0 && (
               <QuickViewModalOptionCard
+                modalItem={modalItem}
                 cardType={'dayChoreNumber'}
                 itemNumber={zoneIcons?.dayChoreNumber}
                 navigation={navigation}
@@ -57,6 +59,7 @@ const MapQuickViewModal: React.FC<MapQuickViewModalProps> = ({
             {!!zoneIcons?.lateHarvestNumber &&
               zoneIcons?.lateHarvestNumber > 0 && (
                 <QuickViewModalOptionCard
+                  modalItem={modalItem}
                   cardType={'lateHarvestNumber'}
                   itemNumber={zoneIcons?.lateHarvestNumber}
                   navigation={navigation}
@@ -66,6 +69,7 @@ const MapQuickViewModal: React.FC<MapQuickViewModalProps> = ({
             {!!zoneIcons?.dayHarvestNumber &&
               zoneIcons?.dayHarvestNumber > 0 && (
                 <QuickViewModalOptionCard
+                  modalItem={modalItem}
                   cardType={'dayHarvestNumber'}
                   itemNumber={zoneIcons?.dayHarvestNumber}
                   navigation={navigation}
@@ -73,6 +77,7 @@ const MapQuickViewModal: React.FC<MapQuickViewModalProps> = ({
                 />
               )}
             <QuickViewModalOptionCard
+              modalItem={modalItem}
               cardType={'emptyRowNumber'}
               itemNumber={zoneIcons?.emptyRowNumber}
               navigation={navigation}

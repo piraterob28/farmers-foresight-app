@@ -6,6 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import FarmMapQuickView from './app/views/FarmMapQuickView';
 import FarmTaskListView from './app/views/FarmTaskListView';
+import TaskListView from './app/views/TaskListView';
 import ZoneView from './app/views/ZoneView';
 import ZoneListView from './app/views/ZoneListView';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
@@ -88,6 +89,9 @@ const HomeMapStackNavigator = (): React.JSX.Element => {
       </Stack.Screen>
       <Stack.Screen name="ZoneView" options={{}}>
         {props => <ZoneView store={stores.zoneStore} {...props} />}
+      </Stack.Screen>
+      <Stack.Screen name="TaskListView" options={{}}>
+        {props => <TaskListView store={stores.taskListStore} {...props} />}
       </Stack.Screen>
     </Stack.Navigator>
   );
