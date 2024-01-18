@@ -31,8 +31,9 @@ const TaskListFilterPills: React.FC<TaskListFilterPillsProps> = ({
           ? styles.filterPillsContainerDisabled
           : styles.filterPillsContainer
       }>
-      {Object.values(pillSelection).map(value => (
+      {Object.values(pillSelection).map((value, index) => (
         <TouchableOpacity
+          key={index}
           disabled={isDisabled}
           onPress={() => setSelectedPill(value)}
           style={

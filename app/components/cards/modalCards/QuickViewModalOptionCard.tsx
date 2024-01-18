@@ -35,7 +35,7 @@ const QuickViewModalOptionCard: React.FC<QuickViewModalOptionCardProps> = ({
       text: 'Late Chores:',
       nav_route: 'TaskListView',
       params: {
-        taskType: 'Late Chores',
+        taskType: 'late chores',
         taskScope: 'zone',
         scopeId: modalItem?.id,
       },
@@ -45,7 +45,7 @@ const QuickViewModalOptionCard: React.FC<QuickViewModalOptionCardProps> = ({
       text: "Day's Chores:",
       nav_route: 'TaskListView',
       params: {
-        taskType: 'Day Chores',
+        taskType: 'day chores',
         taskScope: 'zone',
         scopeId: modalItem?.id,
       },
@@ -55,7 +55,7 @@ const QuickViewModalOptionCard: React.FC<QuickViewModalOptionCardProps> = ({
       text: 'Late Harvests:',
       nav_route: 'TaskListView',
       params: {
-        taskType: 'Late Harvest',
+        taskType: 'late harvest',
         taskScope: 'zone',
         scopeId: modalItem?.id,
       },
@@ -65,7 +65,7 @@ const QuickViewModalOptionCard: React.FC<QuickViewModalOptionCardProps> = ({
       text: "Day's Harvests:",
       nav_route: 'TaskListView',
       params: {
-        taskType: 'Day Harvest',
+        taskType: 'day harvest',
         taskScope: 'zone',
         scopeId: modalItem?.id,
       },
