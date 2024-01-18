@@ -22,11 +22,10 @@ const getChoreListOneZone:
       assignedTo
       choreTypeId
       choreType {
-        id
         active
-        averageChoreTime
         choreType
         description
+        id
         insertedAt
         name
         toolIds
