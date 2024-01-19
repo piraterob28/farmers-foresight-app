@@ -38,6 +38,8 @@ const QuickViewModalOptionCard: React.FC<QuickViewModalOptionCardProps> = ({
         taskType: 'late chores',
         taskScope: 'zone',
         scopeId: modalItem?.id,
+        pageTitle: 'Late Chores',
+        pageTitleIcon: 'task-late',
       },
     },
     dayChoreNumber: {
@@ -48,6 +50,8 @@ const QuickViewModalOptionCard: React.FC<QuickViewModalOptionCardProps> = ({
         taskType: 'day chores',
         taskScope: 'zone',
         scopeId: modalItem?.id,
+        pageTitle: "Day's Chores",
+        pageTitleIcon: 'task',
       },
     },
     lateHarvestNumber: {
@@ -58,6 +62,8 @@ const QuickViewModalOptionCard: React.FC<QuickViewModalOptionCardProps> = ({
         taskType: 'late harvest',
         taskScope: 'zone',
         scopeId: modalItem?.id,
+        pageTitle: 'Late Harvests',
+        pageTitleIcon: 'harvest-late',
       },
     },
     dayHarvestNumber: {
@@ -68,6 +74,8 @@ const QuickViewModalOptionCard: React.FC<QuickViewModalOptionCardProps> = ({
         taskType: 'day harvest',
         taskScope: 'zone',
         scopeId: modalItem?.id,
+        pageTitle: "Day's Harvests",
+        pageTitleIcon: 'harvest',
       },
     },
     emptyRowNumber: {

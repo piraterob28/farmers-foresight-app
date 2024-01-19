@@ -90,7 +90,16 @@ const HomeMapStackNavigator = (): React.JSX.Element => {
       <Stack.Screen name="ZoneView" options={{}}>
         {props => <ZoneView store={stores.zoneStore} {...props} />}
       </Stack.Screen>
-      <Stack.Screen name="TaskListView" options={{}}>
+      <Stack.Screen
+        options={{
+          headerTitle: () => (
+            <HeaderTitle
+              text={store?.taskListStore?.pageTitle}
+              image={store?.taskListStore?.pageTitleIcon}
+            />
+          ),
+        }}
+        name="TaskListView">
         {props => <TaskListView store={stores.taskListStore} {...props} />}
       </Stack.Screen>
     </Stack.Navigator>

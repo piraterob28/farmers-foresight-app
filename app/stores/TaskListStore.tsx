@@ -7,17 +7,32 @@ class TaskListStore {
   isLoading: boolean = false;
   rootStore: RootStore;
   choreData: object;
+  pageTitle: string;
+  pageTitleIcon: 'task' | 'task-late' | 'harvest' | 'harvest-late' | 'row';
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this, {
       isLoading: observable,
       choreData: observable,
+      pageTitle: observable,
+      pageTitleIcon: observable,
       getTaskList: action,
+      setPageTitle: action,
       rootStore: false,
     });
     this.rootStore = rootStore;
     this.choreData = {};
+    this.pageTitle = "Day's Tasks";
+    this.pageTitleIcon = 'task';
   }
+
+  setPageTitle = (
+    title: string,
+    icon: 'task' | 'task-late' | 'harvest' | 'harvest-late' | 'row',
+  ) => {
+    this.pageTitle = title;
+    this.pageTitleIcon = icon;
+  };
 
   getTaskList = async (
     taskType: string,

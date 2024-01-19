@@ -20,7 +20,7 @@ interface TaskListFilterPillsProps {
 }
 
 const TaskListFilterPills: React.FC<TaskListFilterPillsProps> = ({
-  isDisabled = true,
+  isDisabled = false,
 }) => {
   const [selectedPill, setSelectedPill] = useState(pillSelection.zones);
 

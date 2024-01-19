@@ -11,6 +11,10 @@ interface TaskListViewProps {
 }
 
 const TaskListView: React.FC<TaskListViewProps> = observer(({route, store}) => {
+  store.setPageTitle(
+    (title = route?.params?.pageTitle),
+    (icon = route?.params?.pageTitleIcon),
+  );
   store.getTaskList(
     (taskType = route?.params?.taskType),
     (taskScope = route?.params?.taskScope),
@@ -19,7 +23,7 @@ const TaskListView: React.FC<TaskListViewProps> = observer(({route, store}) => {
 
   return (
     <View style={styles.taskListViewContainer}>
-      <TaskListFilterPills />
+      <TaskListFilterPills isDisabled={true} />
       <Text>TaskListView</Text>
     </View>
   );
