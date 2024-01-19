@@ -11,28 +11,43 @@ const getChoreListOneZone:
   query getChoreListOneZone($choreCatagory: String!, $zoneId: Int!) {
     getChoreListOneZone(choreCatagory: $choreCatagory, zoneId: $zoneId) {
       id
-      rowBatchId
-      rowNumber
-      zoneNumber
-      recurring
-      recurrType
-      recurrWeekDays
-      startDate
-      insertedAt
-      updatedAt
+      choreId
       active
-      assignedTo
-      choreTypeId
-      choreType {
-        active
-        choreType
-        description
-        averageChoreTime
+      choreBatchId
+      completed
+      completedBy
+      insertedAt
+      notes
+      recordTime
+      timeEnd
+      timeStart
+      todoDate
+      updatedAt
+      choreData {
         id
+        rowBatchId
+        rowNumber
+        zoneNumber
+        recurring
+        recurrType
+        recurrWeekDays
+        startDate
         insertedAt
-        name
-        toolIds
         updatedAt
+        active
+        assignedTo
+        choreTypeId
+        choreType {
+          active
+          choreType
+          description
+          averageChoreTime
+          id
+          insertedAt
+          name
+          toolIds
+          updatedAt
+        }
       }
     }
   }

@@ -6,6 +6,8 @@ import ChecksGreen from '../../assets/icons/checks-green.svg';
 import CropsRed from '../../assets/icons/crops-red.svg';
 import CropsGreen from '../../assets/icons/crops-green.svg';
 import Rows from '../../assets/icons/rows.svg';
+import Weeding from '../../assets/icons/weeding.svg';
+import Fertilize from '../../assets/icons/fertilize.svg';
 import appColors from '../../styles/colors';
 
 interface HeaderTitleProps extends SelectedImageProps {
@@ -15,7 +17,14 @@ interface HeaderTitleProps extends SelectedImageProps {
 }
 
 interface SelectedImageProps {
-  image: 'task' | 'task-late' | 'harvest' | 'harvest-late' | 'row';
+  image:
+    | 'task'
+    | 'task-late'
+    | 'harvest'
+    | 'harvest-late'
+    | 'row'
+    | 'weeding'
+    | 'fertilize';
 }
 
 const SelectedImage: React.FC<SelectedImageProps> = ({image}) => {
@@ -30,6 +39,10 @@ const SelectedImage: React.FC<SelectedImageProps> = ({image}) => {
       return <CropsRed width={30} />;
     case 'row':
       return <Rows width={30} />;
+    case 'weeding':
+      return <Weeding width={30} />;
+    case 'fertilize':
+      return <Fertilize width={30} />;
   }
 };
 

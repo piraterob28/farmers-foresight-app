@@ -2,14 +2,15 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {observer} from 'mobx-react';
 import appColors from '../../../styles/colors';
-import {ChoreData} from '../../../types/choreTypes';
+import {ChoreData, DailyChore} from '../../../types/choreTypes';
 import Weeding from '../../../assets/icons/weeding.svg';
 import Fertilize from '../../../assets/icons/fertilize.svg';
 import ArrowRight from '../../../assets/icons/arrow-right.svg';
 import HourGlass from '../../../assets/icons/hourglass.svg';
 
 interface TaskListCardProps {
-  task: ChoreData;
+  task: DailyChore;
+  navigation: any;
 }
 
 const titleIcons = (iconStyle: string | undefined) => {
@@ -20,39 +21,57 @@ const titleIcons = (iconStyle: string | undefined) => {
   }
 };
 
-const TaskListCard: React.FC<TaskListCardProps> = observer(({task}) => {
-  return (
-    <TouchableOpacity style={styles.taskListCardContainer}>
-      <View style={styles.taskListInfoContainer}>
-        <View style={styles.cardTitleContainer}>
-          {titleIcons(task?.choreType?.choreType)}
-          <Text style={styles.cardTitleText}>{task?.choreType?.choreType}</Text>
-        </View>
-        <View style={styles.cardBodyContainer}>
-          <View style={styles.cardBodyZoneInfoContainer}>
-            <Text style={styles.zoneInfo}>Zone {task?.zoneNumber} : </Text>
-            <Text style={styles.zoneInfo}>Row: {task?.rowNumber}</Text>
+const TaskListCard: React.FC<TaskListCardProps> = observer(
+  ({task, navigation}) => {
+    return (
+      <TouchableOpacity
+        style={styles.taskListCardContainer}
+        onPress={() => {
+          navigation.navigate('TaskView', {
+            taskId: task.id,
+          });
+        }}>
+        <View style={styles.taskListInfoContainer}>
+          <View style={styles.cardTitleContainer}>
+            {titleIcons(task?.choreData?.choreType?.choreType)}
+            <Text style={styles.cardTitleText}>
+              {task?.choreData?.choreType?.choreType}
+            </Text>
+            {}
+            <Text />
           </View>
-          <View>
-            <Text style={styles.choreTypeText}>{task?.choreType?.name}</Text>
+          <View style={styles.cardBodyContainer}>
+            <View style={styles.cardBodyZoneInfoContainer}>
+              <Text style={styles.zoneInfo}>
+                Zone {task?.choreData?.zoneNumber} :{' '}
+              </Text>
+              <Text style={styles.zoneInfo}>
+                Row: {task?.choreData?.rowNumber}
+              </Text>
+            </View>
+            <View>
+              <Text style={styles.choreTypeText}>
+                {task?.choreData?.choreType?.name}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.cardFooterContainer}>
+            <HourGlass />
+            <Text style={styles.cardFooterTimeText}>
+              {task?.choreData?.choreType?.averageChoreTime
+                ? task?.choreData?.choreType?.averageChoreTime
+                : ' No Record'}
+            </Text>
+            {!!task?.choreData?.choreType?.averageChoreTime && (
+              <Text style={styles.averageText}>Average On Record</Text>
+            )}
           </View>
         </View>
-        <View style={styles.cardFooterContainer}>
-          <HourGlass />
-          <Text style={styles.cardFooterTimeText}>
-            {task.choreType?.averageChoreTime
-              ? task.choreType?.averageChoreTime
-              : ' No Record'}
-          </Text>
-          {!!task?.choreType?.averageChoreTime && (
-            <Text style={styles.averageText}>Average On Record</Text>
-          )}
-        </View>
-      </View>
-      <ArrowRight />
-    </TouchableOpacity>
-  );
-});
+        <ArrowRight />
+      </TouchableOpacity>
+    );
+  },
+);
 
 export default TaskListCard;
 

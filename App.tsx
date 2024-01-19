@@ -6,6 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import FarmMapQuickView from './app/views/FarmMapQuickView';
 import FarmTaskListView from './app/views/FarmTaskListView';
+import TaskView from './app/views/TaskView';
 import TaskListView from './app/views/TaskListView';
 import ZoneView from './app/views/ZoneView';
 import ZoneListView from './app/views/ZoneListView';
@@ -94,6 +95,13 @@ const HomeMapStackNavigator = observer((): React.JSX.Element => {
         }}
         name="TaskListView">
         {props => <TaskListView store={stores.taskListStore} {...props} />}
+      </Stack.Screen>
+      <Stack.Screen
+        options={{
+          headerTitle: () => <HeaderTitle store={stores?.taskStore} />,
+        }}
+        name="TaskView">
+        {props => <TaskView store={stores.taskStore} {...props} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

@@ -1,3 +1,20 @@
+interface DailyChore {
+  id: number;
+  choreId: number;
+  active: boolean;
+  choreBatchId: number;
+  completed: boolean;
+  completedBy: number[];
+  insertedAt: string;
+  notes: string;
+  recordTime: boolean;
+  timeEnd: string;
+  timeStart: string;
+  todoDate: string;
+  updatedAt: string;
+  choreData?: ChoreData;
+}
+
 interface ChoreData {
   id: number;
   rowBatchId: number;
@@ -28,4 +45,4 @@ interface ChoreType {
   averageChoreTime?: string;
 }
 
-export {ChoreData, ChoreType};
+export {ChoreData, ChoreType, DailyChore};

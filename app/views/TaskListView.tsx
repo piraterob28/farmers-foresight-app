@@ -7,34 +7,39 @@ import appColors from '../styles/colors';
 import TaskListCard from '../components/cards/taskListCards/TaskListCard';
 
 interface TaskListViewProps {
+  navigation: object;
   route: object;
   store: TaskListStore;
 }
 
-const TaskListView: React.FC<TaskListViewProps> = observer(({route, store}) => {
-  useEffect(() => {
-    store.setPageTitle(
-      (title = route?.params?.pageTitle),
-      (icon = route?.params?.pageTitleIcon),
+const TaskListView: React.FC<TaskListViewProps> = observer(
+  ({navigation, route, store}) => {
+    useEffect(() => {
+      store.setPageTitle(
+        (title = route?.params?.pageTitle),
+        (icon = route?.params?.pageTitleIcon),
+      );
+      store.getTaskList(
+        (taskType = route?.params?.taskType),
+        (taskScope = route?.params?.taskScope),
+        (scopeId = route?.params?.scopeId),
+      );
+    }, [route.params, store]);
+    console.log('TaskListView', store.choreData);
+    return (
+      <View style={styles.taskListViewContainer}>
+        <TaskListFilterPills isDisabled={true} />
+        <FlatList
+          data={store?.choreData}
+          renderItem={({item}) => (
+            <TaskListCard task={item} navigation={navigation} />
+          )}
+          keyExtractor={item => item.id}
+        />
+      </View>
     );
-    store.getTaskList(
-      (taskType = route?.params?.taskType),
-      (taskScope = route?.params?.taskScope),
-      (scopeId = route?.params?.scopeId),
-    );
-  }, [route.params, store]);
-
-  return (
-    <View style={styles.taskListViewContainer}>
-      <TaskListFilterPills isDisabled={true} />
-      <FlatList
-        data={store?.choreData}
-        renderItem={({item}) => <TaskListCard task={item} />}
-        keyExtractor={item => item.id}
-      />
-    </View>
-  );
-});
+  },
+);
 
 export default TaskListView;
 
