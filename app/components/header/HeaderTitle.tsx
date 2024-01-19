@@ -1,5 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {observer} from 'mobx-react';
 import ChecksRed from '../../assets/icons/checks-red.svg';
 import ChecksGreen from '../../assets/icons/checks-green.svg';
 import CropsRed from '../../assets/icons/crops-red.svg';
@@ -10,6 +11,7 @@ import appColors from '../../styles/colors';
 interface HeaderTitleProps extends SelectedImageProps {
   text: string;
   imageFirst: boolean;
+  store: object;
 }
 
 interface SelectedImageProps {
@@ -31,27 +33,31 @@ const SelectedImage: React.FC<SelectedImageProps> = ({image}) => {
   }
 };
 
-const HeaderTitle: React.FC<HeaderTitleProps> = ({
-  text,
-  image,
-  imageFirst = true,
-}) => {
-  if (imageFirst) {
-    return (
-      <View style={styles.headerTitleContainer}>
-        <SelectedImage image={image} />
-        <Text style={styles.headerTitleText}>{text}</Text>
-      </View>
-    );
-  } else {
-    return (
-      <View style={styles.headerTitleContainer}>
-        <Text>{text}</Text>
-        <SelectedImage image={image} />
-      </View>
-    );
-  }
-};
+const HeaderTitle: React.FC<HeaderTitleProps> = observer(
+  ({imageFirst = true, store}) => {
+    const [titleText, setTitleText] = useState(store?.pageTitle);
+    const [titleImage, setTitleImage] = useState(store?.pageTitleIcon);
+    useEffect(() => {
+      setTitleText(store?.pageTitle);
+      setTitleImage(store?.pageTitleIcon);
+    }, [store]);
+    if (imageFirst) {
+      return (
+        <View style={styles.headerTitleContainer}>
+          <SelectedImage image={titleImage} />
+          <Text style={styles.headerTitleText}>{titleText}</Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.headerTitleContainer}>
+          <Text>{titleText}</Text>
+          <SelectedImage image={titleImage} />
+        </View>
+      );
+    }
+  },
+);
 
 export default HeaderTitle;
 

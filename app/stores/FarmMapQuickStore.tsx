@@ -1,4 +1,4 @@
-import {makeAutoObservable, observable, action, isObservableArray} from 'mobx';
+import {makeAutoObservable, observable, action, runInAction} from 'mobx';
 import {RootStore} from './RootStore';
 import {ZoneProps} from '../types/zoneTypes';
 import {client} from '../util/apolloClient';
@@ -6,6 +6,8 @@ import {getZonesQuickView, setZonesQuickView} from '../graphql/zones';
 import {objectWithoutKey} from '../util/objectUtils';
 
 class FarmMapQuickStore {
+  pageTitle: string;
+  pageTitleIcon: string;
   isLoading: boolean = false;
   isEditMode: boolean = false;
   rootStore: RootStore;
@@ -14,6 +16,8 @@ class FarmMapQuickStore {
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this, {
+      pageTitle: observable,
+      pageTitleIcon: observable,
       isLoading: observable,
       isEditMode: observable,
       farmZoneData: observable,
@@ -25,7 +29,8 @@ class FarmMapQuickStore {
       rootStore: false,
     });
     this.rootStore = rootStore;
-
+    this.pageTitle = 'Farm Map';
+    this.pageTitleIcon = 'task';
     this.getZoneData();
   }
 
@@ -46,7 +51,9 @@ class FarmMapQuickStore {
         query: getZonesQuickView,
       });
       const result = queryResult.data.getZonesQuickView;
-      this.farmZoneData = result;
+      runInAction(() => {
+        this.farmZoneData = result;
+      });
     } catch (err) {
       console.log('getZonesQuickView failed', err);
     }

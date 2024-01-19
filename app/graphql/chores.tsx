@@ -25,6 +25,7 @@ const getChoreListOneZone:
         active
         choreType
         description
+        averageChoreTime
         id
         insertedAt
         name

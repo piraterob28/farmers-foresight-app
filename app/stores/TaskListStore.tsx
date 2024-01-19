@@ -1,4 +1,4 @@
-import {makeAutoObservable, observable, action} from 'mobx';
+import {makeAutoObservable, observable, action, runInAction} from 'mobx';
 import {RootStore} from './RootStore';
 import {client} from '../util/apolloClient';
 import {getChoreListOneZone} from '../graphql/chores';
@@ -6,7 +6,7 @@ import {getChoreListOneZone} from '../graphql/chores';
 class TaskListStore {
   isLoading: boolean = false;
   rootStore: RootStore;
-  choreData: object;
+  choreData: object[] = observable.array();
   pageTitle: string;
   pageTitleIcon: 'task' | 'task-late' | 'harvest' | 'harvest-late' | 'row';
 
@@ -21,7 +21,6 @@ class TaskListStore {
       rootStore: false,
     });
     this.rootStore = rootStore;
-    this.choreData = {};
     this.pageTitle = "Day's Tasks";
     this.pageTitleIcon = 'task';
   }
@@ -40,6 +39,7 @@ class TaskListStore {
     scopeId: number,
   ) => {
     this.isLoading = true;
+    this.choreData = [];
     if (taskScope === 'zone') {
       try {
         const queryResult = await client.query({
@@ -51,9 +51,12 @@ class TaskListStore {
             zoneId: scopeId,
           },
         });
+
         const result = queryResult.data.getChoreListOneZone;
-        console.log('Result *************', result, result.length);
-        this.choreData = result;
+
+        runInAction(() => {
+          this.choreData = result;
+        });
       } catch (err) {
         console.log('getZonesQuickView failed', err);
       }

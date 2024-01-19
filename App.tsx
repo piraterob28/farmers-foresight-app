@@ -58,7 +58,7 @@ function HomeTabNav(): React.JSX.Element {
   );
 }
 
-const HomeMapStackNavigator = (): React.JSX.Element => {
+const HomeMapStackNavigator = observer((): React.JSX.Element => {
   const stores = useStore();
   return (
     <Stack.Navigator
@@ -69,9 +69,7 @@ const HomeMapStackNavigator = (): React.JSX.Element => {
       <Stack.Screen
         name="FarmMapView"
         options={{
-          headerTitle: () => (
-            <HeaderTitle text={'Map Quick View'} image={'task'} />
-          ),
+          headerTitle: () => <HeaderTitle store={stores?.farmMapQuickStore} />,
           headerRight: () => (
             <HeaderEditButton onSelect={store.farmMapQuickStore.setEditMode} />
           ),
@@ -92,19 +90,14 @@ const HomeMapStackNavigator = (): React.JSX.Element => {
       </Stack.Screen>
       <Stack.Screen
         options={{
-          headerTitle: () => (
-            <HeaderTitle
-              text={store?.taskListStore?.pageTitle}
-              image={store?.taskListStore?.pageTitleIcon}
-            />
-          ),
+          headerTitle: () => <HeaderTitle store={stores?.taskListStore} />,
         }}
         name="TaskListView">
         {props => <TaskListView store={stores.taskListStore} {...props} />}
       </Stack.Screen>
     </Stack.Navigator>
   );
-};
+});
 
 const HomeListStackNavigator = (): React.JSX.Element => {
   const stores = useStore();
@@ -116,9 +109,7 @@ const HomeListStackNavigator = (): React.JSX.Element => {
       <Stack.Screen
         name="FarmListView"
         options={{
-          headerTitle: () => (
-            <HeaderTitle text={'Farm List View'} image={'task'} />
-          ),
+          headerTitle: () => <HeaderTitle store={stores.zoneStore} />,
           headerStyle: {
             backgroundColor: '#ffffff',
           },
