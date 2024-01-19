@@ -30,8 +30,8 @@ const TaskListCard: React.FC<TaskListCardProps> = observer(({task}) => {
         </View>
         <View style={styles.cardBodyContainer}>
           <View style={styles.cardBodyZoneInfoContainer}>
-            <Text style={styles.zoneInfo}>Zone:</Text>
-            <Text style={styles.zoneInfo}>Row:</Text>
+            <Text style={styles.zoneInfo}>Zone {task?.zoneNumber} : </Text>
+            <Text style={styles.zoneInfo}>Row: {task?.rowNumber}</Text>
           </View>
           <View>
             <Text style={styles.choreTypeText}>{task?.choreType?.name}</Text>

@@ -12,6 +12,8 @@ const getChoreListOneZone:
     getChoreListOneZone(choreCatagory: $choreCatagory, zoneId: $zoneId) {
       id
       rowBatchId
+      rowNumber
+      zoneNumber
       recurring
       recurrType
       recurrWeekDays
