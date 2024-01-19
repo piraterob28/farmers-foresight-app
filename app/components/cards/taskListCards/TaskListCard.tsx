@@ -1,9 +1,10 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {observer} from 'mobx-react';
 import appColors from '../../../styles/colors';
 import {ChoreData} from '../../../types/choreTypes';
 import Weeding from '../../../assets/icons/weeding.svg';
+import Fertilize from '../../../assets/icons/fertilize.svg';
 import ArrowRight from '../../../assets/icons/arrow-right.svg';
 import HourGlass from '../../../assets/icons/hourglass.svg';
 
@@ -14,12 +15,14 @@ interface TaskListCardProps {
 const titleIcons = (iconStyle: string | undefined) => {
   if (iconStyle === 'weeding') {
     return <Weeding />;
+  } else if (iconStyle === 'fertilize') {
+    return <Fertilize />;
   }
 };
 
 const TaskListCard: React.FC<TaskListCardProps> = observer(({task}) => {
   return (
-    <View style={styles.taskListCardContainer}>
+    <TouchableOpacity style={styles.taskListCardContainer}>
       <View style={styles.taskListInfoContainer}>
         <View style={styles.cardTitleContainer}>
           {titleIcons(task?.choreType?.choreType)}
@@ -27,11 +30,11 @@ const TaskListCard: React.FC<TaskListCardProps> = observer(({task}) => {
         </View>
         <View style={styles.cardBodyContainer}>
           <View style={styles.cardBodyZoneInfoContainer}>
-            <Text>Zone:</Text>
-            <Text>Row:</Text>
+            <Text style={styles.zoneInfo}>Zone:</Text>
+            <Text style={styles.zoneInfo}>Row:</Text>
           </View>
           <View>
-            <Text>Plant Info</Text>
+            <Text style={styles.choreTypeText}>{task?.choreType?.name}</Text>
           </View>
         </View>
         <View style={styles.cardFooterContainer}>
@@ -39,12 +42,15 @@ const TaskListCard: React.FC<TaskListCardProps> = observer(({task}) => {
           <Text style={styles.cardFooterTimeText}>
             {task.choreType?.averageChoreTime
               ? task.choreType?.averageChoreTime
-              : ' No'}
+              : ' No Record'}
           </Text>
+          {!!task?.choreType?.averageChoreTime && (
+            <Text style={styles.averageText}>Average On Record</Text>
+          )}
         </View>
       </View>
       <ArrowRight />
-    </View>
+    </TouchableOpacity>
   );
 });
 
@@ -67,10 +73,10 @@ const styles = StyleSheet.create({
   },
   cardTitleContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    paddingVertical: 5,
   },
   cardTitleText: {
-    fontSize: 24,
+    fontSize: 26,
     color: appColors.darkGreen,
     fontWeight: '700',
     textTransform: 'capitalize',
@@ -79,6 +85,14 @@ const styles = StyleSheet.create({
   cardBodyContainer: {},
   cardBodyZoneInfoContainer: {
     flexDirection: 'row',
+  },
+  zoneInfo: {
+    fontSize: 16,
+    paddingBottom: 3,
+  },
+  choreTypeText: {
+    fontSize: 16,
+    paddingBottom: 3,
   },
   cardFooterContainer: {
     flexDirection: 'row',
@@ -89,5 +103,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginLeft: 10,
     fontWeight: '700',
+  },
+  averageText: {
+    fontSize: 11,
+    marginLeft: 10,
   },
 });

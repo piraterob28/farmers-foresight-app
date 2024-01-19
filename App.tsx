@@ -109,7 +109,7 @@ const HomeListStackNavigator = (): React.JSX.Element => {
       <Stack.Screen
         name="FarmListView"
         options={{
-          headerTitle: () => <HeaderTitle store={stores.zoneStore} />,
+          headerTitle: () => <HeaderTitle store={stores.farmListStore} />,
           headerStyle: {
             backgroundColor: '#ffffff',
           },
