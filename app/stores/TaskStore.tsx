@@ -1,12 +1,14 @@
 import {makeAutoObservable, observable, action, runInAction} from 'mobx';
 import {RootStore} from './RootStore';
 import {client} from '../util/apolloClient';
+import {DailyChore} from '../types/choreTypes';
 
 class TaskStore {
   isLoading: boolean = false;
   rootStore: RootStore;
   pageTitle: string;
   pageTitleIcon: 'weeding' | 'fertilize';
+  task: DailyChore | undefined;
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this, {

@@ -11,6 +11,7 @@ import HourGlass from '../../../assets/icons/hourglass.svg';
 interface TaskListCardProps {
   task: DailyChore;
   navigation: any;
+  onSelect: Function;
 }
 
 const titleIcons = (iconStyle: string | undefined) => {
@@ -22,13 +23,16 @@ const titleIcons = (iconStyle: string | undefined) => {
 };
 
 const TaskListCard: React.FC<TaskListCardProps> = observer(
-  ({task, navigation}) => {
+  ({task, navigation, onSelect}) => {
     return (
       <TouchableOpacity
         style={styles.taskListCardContainer}
         onPress={() => {
+          onSelect(task);
           navigation.navigate('TaskView', {
             taskId: task.id,
+            pageTitle: task?.choreData?.choreType?.choreType,
+            pageTitleIcon: task?.choreData?.choreType?.choreType,
           });
         }}>
         <View style={styles.taskListInfoContainer}>

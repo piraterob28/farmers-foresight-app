@@ -85,5 +85,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '900',
     color: appColors.darkGreen,
+    textTransform: 'capitalize',
   },
 });

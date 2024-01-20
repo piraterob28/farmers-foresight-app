@@ -2,11 +2,12 @@ import {makeAutoObservable, observable, action, runInAction} from 'mobx';
 import {RootStore} from './RootStore';
 import {client} from '../util/apolloClient';
 import {getChoreListOneZone} from '../graphql/chores';
+import {DailyChore} from '../types/choreTypes';
 
 class TaskListStore {
   isLoading: boolean = false;
   rootStore: RootStore;
-  choreData: object[] = observable.array();
+  choreData: DailyChore[] = observable.array();
   pageTitle: string;
   pageTitleIcon: 'task' | 'task-late' | 'harvest' | 'harvest-late' | 'row';
 
@@ -18,6 +19,7 @@ class TaskListStore {
       pageTitleIcon: observable,
       getTaskList: action,
       setPageTitle: action,
+      onListItemSelect: action,
       rootStore: false,
     });
     this.rootStore = rootStore;
@@ -62,6 +64,10 @@ class TaskListStore {
       }
       this.isLoading = false;
     }
+  };
+
+  onListItemSelect = (task: DailyChore) => {
+    this.rootStore.taskStore.task = task;
   };
 }
 

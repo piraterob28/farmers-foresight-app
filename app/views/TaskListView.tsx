@@ -25,16 +25,19 @@ const TaskListView: React.FC<TaskListViewProps> = observer(
         (scopeId = route?.params?.scopeId),
       );
     }, [route.params, store]);
-    console.log('TaskListView', store.choreData);
     return (
       <View style={styles.taskListViewContainer}>
         <TaskListFilterPills isDisabled={true} />
         <FlatList
           data={store?.choreData}
           renderItem={({item}) => (
-            <TaskListCard task={item} navigation={navigation} />
+            <TaskListCard
+              task={item}
+              navigation={navigation}
+              onSelect={store.onListItemSelect}
+            />
           )}
-          keyExtractor={item => item.id}
+          keyExtractor={item => `${item.id}`}
         />
       </View>
     );
