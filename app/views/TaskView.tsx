@@ -10,6 +10,7 @@ import React, {useEffect, useState} from 'react';
 import TaskStore from '../stores/TaskStore';
 import {observer} from 'mobx-react';
 import appColors from '../styles/colors';
+import RecordTimeModal from '../components/modals/RecordTimeModal';
 
 interface TaskViewProps {
   route: object;
@@ -18,6 +19,7 @@ interface TaskViewProps {
 
 const TaskView: React.FC<TaskViewProps> = observer(({route, store}) => {
   const [descriptionOpen, setDescriptionOpen] = useState(false);
+  const [isRecordTimeModalOpes, setIsRecordTimeModalOpen] = useState(false);
 
   useEffect(() => {
     store.setPageTitle(
@@ -27,6 +29,11 @@ const TaskView: React.FC<TaskViewProps> = observer(({route, store}) => {
   }, [route.params, store]);
   return (
     <ScrollView style={styles.taskViewContainer}>
+      <RecordTimeModal
+        isVisible={isRecordTimeModalOpes}
+        onClose={setIsRecordTimeModalOpen}
+        task={store?.task}
+      />
       <View style={styles.taskTitleContainer}>
         <Text style={styles.titleText}>
           Zone {store?.task?.choreData?.zoneNumber} : Row{' '}
@@ -38,7 +45,7 @@ const TaskView: React.FC<TaskViewProps> = observer(({route, store}) => {
       </View>
       <View style={styles.taskToolContainer}>
         <Text style={styles.taskToolTitleText}>Tools:</Text>
-        <Text style={styles.taskToolText}> * Needs Plumbing through</Text>
+        <Text style={styles.taskToolText}>* Needs Plumbing through</Text>
       </View>
       <View style={styles.taskDescriptionContainer}>
         <Text style={styles.taskDescriptionTitleText}>Description:</Text>
@@ -67,7 +74,9 @@ const TaskView: React.FC<TaskViewProps> = observer(({route, store}) => {
               ? store?.task?.choreData?.choreType?.averageChoreTime
               : 'No Record'}
           </Text>
-          <TouchableOpacity style={styles.recordTimeButtonContainer}>
+          <TouchableOpacity
+            onPress={() => setIsRecordTimeModalOpen(true)}
+            style={styles.recordTimeButtonContainer}>
             <Text style={styles.recordTimeButtonText}>Record Time</Text>
           </TouchableOpacity>
         </View>

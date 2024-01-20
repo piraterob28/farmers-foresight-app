@@ -8,6 +8,7 @@ const appColors = {
   dirtBrown: '#C4A366',
   offWhite: '#EDEDED',
   white: '#ffffff',
+  modalBackground: 'rgba(0, 0, 0, 0.5)',
 };
 
 export default appColors;
