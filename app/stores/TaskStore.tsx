@@ -2,6 +2,7 @@ import {makeAutoObservable, observable, action, runInAction} from 'mobx';
 import {RootStore} from './RootStore';
 import {client} from '../util/apolloClient';
 import {DailyChore} from '../types/choreTypes';
+import {startTaskTime} from '../graphql/chores';
 
 class TaskStore {
   isLoading: boolean = false;
@@ -26,6 +27,27 @@ class TaskStore {
   setPageTitle = (title: string, icon: 'weeding' | 'fertilize') => {
     this.pageTitle = title;
     this.pageTitleIcon = icon;
+  };
+
+  startRecordTaskTime = async (taskId: number) => {
+    try {
+      const startTimeResult = await client.mutate({
+        errorPolicy: 'all',
+        fetchPolicy: 'no-cache',
+        mutation: startTaskTime,
+        variables: {
+          dailyChoreId: taskId,
+        },
+      });
+      const timeStart = startTimeResult?.data?.startRecordTaskTime;
+      console.log('Store startTime', timeStart);
+
+      runInAction(() => {
+        this.task.timeStart = timeStart;
+      });
+    } catch (err) {
+      console.log('setZonesQuickView failed', err);
+    }
   };
 }
 

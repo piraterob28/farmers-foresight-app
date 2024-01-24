@@ -6,13 +6,14 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import appColors from '../../styles/colors';
 import {DailyChore} from '../../types/choreTypes';
 import CloseRound from '../../assets/icons/close_round.svg';
 import HourGlass from '../../assets/icons/hourglass-filled.svg';
 import Weeding from '../../assets/icons/weeding.svg';
 import Fertilize from '../../assets/icons/fertilize.svg';
+import {observer} from 'mobx-react';
 
 interface RecordTimeModalProps {
   isVisible: boolean;
@@ -23,7 +24,7 @@ interface RecordTimeModalProps {
   task: DailyChore | undefined;
 }
 
-const taskImage = (taskType: string) => {
+const taskImage = (taskType: string | undefined) => {
   if (taskType === 'weeding') {
     return <Weeding />;
   } else if (taskType === 'fertillize') {
@@ -31,66 +32,96 @@ const taskImage = (taskType: string) => {
   }
 };
 
-const RecordTimeModal: React.FC<RecordTimeModalProps> = ({
-  isVisible = false,
-  task,
-  onTimeStart,
-  onTimeStop,
-  onRecordTime,
-  onClose,
-}) => {
-  return (
-    <Modal visible={isVisible} transparent={true} animationType="slide">
-      <TouchableOpacity
-        onPress={() => onClose(false)}
-        style={styles.modalBackgroundContainer}>
-        <TouchableWithoutFeedback>
-          <View style={styles.modalContainer}>
-            <TouchableOpacity
-              onPress={() => onClose(false)}
-              style={styles.closeButtonContainer}>
-              <CloseRound />
-            </TouchableOpacity>
-            <Text style={styles.titleText}>Record Time</Text>
-            <View style={styles.hourglassContainer}>
-              <HourGlass />
-            </View>
-            <Text style={styles.zoneInfoText}>
-              Zone {task?.choreData?.zoneNumber} : Row{' '}
-              {task?.choreData?.rowNumber}
-            </Text>
-            <Text style={styles.taskNameText}>
-              {task?.choreData?.choreType?.name}
-            </Text>
-            <Text style={styles.taskTitleText}>Task</Text>
-            <View style={styles.taskTypeContainer}>
-              {taskImage(task?.choreData?.choreType?.choreType)}
-              <Text style={styles.taskTypeText}>
-                {task?.choreData?.choreType?.choreType}
-              </Text>
-            </View>
-            <View style={styles.averageTimeContainer}>
-              <Text style={styles.averageTimeText}>Average Time:</Text>
-              <Text style={styles.averageTimeTextBold}>
-                {task?.choreData?.choreType?.averageChoreTime
-                  ? task?.choreData?.choreType?.averageChoreTime
-                  : 'No Record'}
-              </Text>
-            </View>
-            <TouchableOpacity style={styles.startTimeButtonContainer}>
-              <Text style={styles.startTimeText}>Start Time</Text>
-            </TouchableOpacity>
-            <View style={styles.recordTimeButtonContainer}>
-              <TouchableOpacity style={styles.recordTimeButton}>
-                <Text style={styles.recordTimeButtonText}>Record Time</Text>
+const RecordTimeModal: React.FC<RecordTimeModalProps> = observer(
+  ({
+    isVisible = false,
+    task,
+    onTimeStart,
+    onTimeStop,
+    onRecordTime,
+    onClose,
+  }) => {
+    const [isRecordingTime, setIsRecordingTime] = useState(
+      !!task?.timeStart && !task.timeEnd,
+    );
+    const timeStart = new Date(task.timeStart);
+
+    useEffect(() => {
+      setIsRecordingTime(!!task?.timeStart && !task?.timeEnd);
+      console.log('useEffect hit', !!task?.timeStart, !task?.timeEnd);
+    }, [task?.timeStart, task?.timeEnd]);
+
+    return (
+      <Modal visible={isVisible} transparent={true} animationType="slide">
+        <TouchableOpacity
+          onPress={() => onClose(false)}
+          style={styles.modalBackgroundContainer}>
+          <TouchableWithoutFeedback>
+            <View style={styles.modalContainer}>
+              <TouchableOpacity
+                onPress={() => onClose(false)}
+                style={styles.closeButtonContainer}>
+                <CloseRound />
               </TouchableOpacity>
+              <Text style={styles.titleText}>Record Time</Text>
+              <View style={styles.hourglassContainer}>
+                <HourGlass />
+              </View>
+              <Text style={styles.zoneInfoText}>
+                Zone {task?.choreData?.zoneNumber} : Row{' '}
+                {task?.choreData?.rowNumber}
+              </Text>
+              <Text style={styles.taskNameText}>
+                {task?.choreData?.choreType?.name}
+              </Text>
+              <Text style={styles.taskTitleText}>Task</Text>
+              <View style={styles.taskTypeContainer}>
+                {taskImage(task?.choreData?.choreType?.choreType)}
+                <Text style={styles.taskTypeText}>
+                  {task?.choreData?.choreType?.choreType}
+                </Text>
+              </View>
+              <View style={styles.averageTimeContainer}>
+                <Text style={styles.averageTimeText}>Average Time:</Text>
+                <Text style={styles.averageTimeTextBold}>
+                  {task?.choreData?.choreType?.averageChoreTime
+                    ? task?.choreData?.choreType?.averageChoreTime
+                    : 'No Record'}
+                </Text>
+              </View>
+              {!!task?.timeStart && (
+                <View style={styles.averageTimeContainer}>
+                  <Text style={styles.averageTimeText}>Start Time: </Text>
+                  <Text style={styles.averageTimeTextBold}>
+                    {timeStart.toLocaleTimeString()}
+                  </Text>
+                </View>
+              )}
+              <TouchableOpacity
+                onPress={() => onTimeStart(task?.id)}
+                style={
+                  isRecordingTime
+                    ? styles.startTimeButtonContainerActive
+                    : styles.startTimeButtonContainer
+                }>
+                <Text style={styles.startTimeText}>
+                  {isRecordingTime ? 'Stop Time' : 'Start Time'}
+                </Text>
+              </TouchableOpacity>
+              <View style={styles.recordTimeButtonContainer}>
+                <TouchableOpacity style={styles.recordTimeButton}>
+                  <Text style={styles.recordTimeButtonText}>
+                    {'Record Time'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </TouchableOpacity>
-    </Modal>
-  );
-};
+          </TouchableWithoutFeedback>
+        </TouchableOpacity>
+      </Modal>
+    );
+  },
+);
 
 export default RecordTimeModal;
 
@@ -169,6 +200,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: appColors.darkGreen,
     fontWeight: '900',
+  },
+  startTimeButtonContainerActive: {
+    marginTop: 25,
+    paddingVertical: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    backgroundColor: appColors.buttonLightGreen,
   },
   startTimeButtonContainer: {
     marginTop: 25,

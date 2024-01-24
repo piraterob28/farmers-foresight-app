@@ -53,4 +53,12 @@ const getChoreListOneZone:
   }
 `;
 
-export {getChoreListOneZone};
+const startTaskTime:
+  | DocumentNode
+  | TypedDocumentNode<any, OperationVariables> = gql`
+  mutation startRecordTaskTime($dailyChoreId: Int!) {
+    startRecordTaskTime(dailyChoreId: $dailyChoreId)
+  }
+`;
+
+export {getChoreListOneZone, startTaskTime};

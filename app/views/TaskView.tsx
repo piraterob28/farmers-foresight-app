@@ -32,6 +32,7 @@ const TaskView: React.FC<TaskViewProps> = observer(({route, store}) => {
       <RecordTimeModal
         isVisible={isRecordTimeModalOpes}
         onClose={setIsRecordTimeModalOpen}
+        onTimeStart={store.startRecordTaskTime}
         task={store?.task}
       />
       <View style={styles.taskTitleContainer}>
