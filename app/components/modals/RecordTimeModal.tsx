@@ -14,6 +14,7 @@ import HourGlass from '../../assets/icons/hourglass-filled.svg';
 import Weeding from '../../assets/icons/weeding.svg';
 import Fertilize from '../../assets/icons/fertilize.svg';
 import {observer} from 'mobx-react';
+import {millisecondsToTime} from '../../util/timeUtils';
 
 interface RecordTimeModalProps {
   isVisible: boolean;
@@ -121,19 +122,36 @@ const RecordTimeModal: React.FC<RecordTimeModalProps> = observer(
                 }>
                 <Text style={styles.startTimeText}>
                   {!!task?.timeStart && !!task?.timeEnd
-                    ? timeDiff
+                    ? millisecondsToTime(timeDiff)
                     : isRecordingTime
                     ? 'Stop Time'
                     : 'Start Time'}
                 </Text>
               </TouchableOpacity>
               <View style={styles.recordTimeButtonContainer}>
-                <TouchableOpacity style={styles.recordTimeButton}>
+                <TouchableOpacity
+                  disabled={!(!!task?.timeStart && !!task?.timeEnd)}
+                  onPress={() => {
+                    onRecordTime(task?.id, true);
+                    onClose();
+                  }}
+                  style={
+                    !!task?.timeStart && !!task?.timeEnd
+                      ? styles.recordTimeButton
+                      : styles.recordTimeButtonDissabled
+                  }>
                   <Text style={styles.recordTimeButtonText}>
                     {'Record Time'}
                   </Text>
                 </TouchableOpacity>
               </View>
+              {!!task?.timeStart && !!task?.timeEnd && (
+                <View style={styles.dismissContainer}>
+                  <TouchableOpacity>
+                    <Text style={styles.dismissText}>Dismiss</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
           </TouchableWithoutFeedback>
         </TouchableOpacity>
@@ -256,9 +274,25 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
   },
+  recordTimeButtonDissabled: {
+    width: '100%',
+    backgroundColor: appColors.buttonGreen,
+    opacity: 0.5,
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderRadius: 10,
+  },
   recordTimeButtonText: {
     fontSize: 26,
     fontWeight: '900',
     color: appColors.white,
+  },
+  dismissContainer: {
+    marginTop: 15,
+  },
+  dismissText: {
+    fontSize: 16,
+    color: appColors.darkGreen,
+    textDecorationLine: 'underline',
   },
 });
