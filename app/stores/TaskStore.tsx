@@ -2,7 +2,7 @@ import {makeAutoObservable, observable, action, runInAction} from 'mobx';
 import {RootStore} from './RootStore';
 import {client} from '../util/apolloClient';
 import {DailyChore} from '../types/choreTypes';
-import {startTaskTime} from '../graphql/chores';
+import {startTaskTime, endTaskTime} from '../graphql/chores';
 
 class TaskStore {
   isLoading: boolean = false;
@@ -17,6 +17,7 @@ class TaskStore {
       pageTitle: observable,
       pageTitleIcon: observable,
       setPageTitle: action,
+      startRecordTaskTime: action,
       rootStore: false,
     });
     this.rootStore = rootStore;
@@ -44,6 +45,27 @@ class TaskStore {
 
       runInAction(() => {
         this.task.timeStart = timeStart;
+      });
+    } catch (err) {
+      console.log('setZonesQuickView failed', err);
+    }
+  };
+
+  endRecordTaskTime = async (taskId: number) => {
+    try {
+      const endTimeResult = await client.mutate({
+        errorPolicy: 'all',
+        fetchPolicy: 'no-cache',
+        mutation: endTaskTime,
+        variables: {
+          dailyChoreId: taskId,
+        },
+      });
+      const timeEnd = endTimeResult?.data?.endRecordTaskTime;
+      console.log('Store startTime', timeEnd);
+
+      runInAction(() => {
+        this.task.timeEnd = timeEnd;
       });
     } catch (err) {
       console.log('setZonesQuickView failed', err);

@@ -45,10 +45,12 @@ const RecordTimeModal: React.FC<RecordTimeModalProps> = observer(
       !!task?.timeStart && !task.timeEnd,
     );
     const timeStart = new Date(task.timeStart);
+    const timeEnd = new Date(task.timeEnd);
+
+    const timeDiff = timeEnd - timeStart;
 
     useEffect(() => {
       setIsRecordingTime(!!task?.timeStart && !task?.timeEnd);
-      console.log('useEffect hit', !!task?.timeStart, !task?.timeEnd);
     }, [task?.timeStart, task?.timeEnd]);
 
     return (
@@ -97,15 +99,32 @@ const RecordTimeModal: React.FC<RecordTimeModalProps> = observer(
                   </Text>
                 </View>
               )}
+              {!!task?.timeEnd && (
+                <View style={styles.averageTimeContainer}>
+                  <Text style={styles.averageTimeText}>End Time: </Text>
+                  <Text style={styles.averageTimeTextBold}>
+                    {timeEnd.toLocaleTimeString()}
+                  </Text>
+                </View>
+              )}
               <TouchableOpacity
-                onPress={() => onTimeStart(task?.id)}
+                disabled={!!task?.timeStart && !!task?.timeEnd}
+                onPress={() => {
+                  isRecordingTime
+                    ? onTimeStop(task?.id)
+                    : onTimeStart(task?.id);
+                }}
                 style={
                   isRecordingTime
                     ? styles.startTimeButtonContainerActive
                     : styles.startTimeButtonContainer
                 }>
                 <Text style={styles.startTimeText}>
-                  {isRecordingTime ? 'Stop Time' : 'Start Time'}
+                  {!!task?.timeStart && !!task?.timeEnd
+                    ? timeDiff
+                    : isRecordingTime
+                    ? 'Stop Time'
+                    : 'Start Time'}
                 </Text>
               </TouchableOpacity>
               <View style={styles.recordTimeButtonContainer}>
