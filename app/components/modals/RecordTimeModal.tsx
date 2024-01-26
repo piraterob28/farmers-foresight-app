@@ -21,6 +21,7 @@ interface RecordTimeModalProps {
   onTimeStart: Function;
   onTimeStop: Function;
   onRecordTime: Function;
+  onDismissTime: Function;
   onClose: Function;
   task: DailyChore | undefined;
 }
@@ -40,6 +41,7 @@ const RecordTimeModal: React.FC<RecordTimeModalProps> = observer(
     onTimeStart,
     onTimeStop,
     onRecordTime,
+    onDismissTime,
     onClose,
   }) => {
     const [isRecordingTime, setIsRecordingTime] = useState(
@@ -147,7 +149,11 @@ const RecordTimeModal: React.FC<RecordTimeModalProps> = observer(
               </View>
               {!!task?.timeStart && !!task?.timeEnd && (
                 <View style={styles.dismissContainer}>
-                  <TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      onDismissTime(task?.id);
+                      onClose();
+                    }}>
                     <Text style={styles.dismissText}>Dismiss</Text>
                   </TouchableOpacity>
                 </View>

@@ -8,8 +8,8 @@ interface DailyChore {
   insertedAt: string;
   notes: string;
   recordTime: boolean;
-  timeEnd: string;
-  timeStart: string;
+  timeEnd: string | undefined;
+  timeStart: string | undefined;
   todoDate: string;
   updatedAt: string;
   choreData?: ChoreData;

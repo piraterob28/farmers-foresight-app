@@ -2,7 +2,12 @@ import {makeAutoObservable, observable, action, runInAction} from 'mobx';
 import {RootStore} from './RootStore';
 import {client} from '../util/apolloClient';
 import {DailyChore} from '../types/choreTypes';
-import {startTaskTime, endTaskTime, setRecordTime} from '../graphql/chores';
+import {
+  startTaskTime,
+  endTaskTime,
+  setRecordTime,
+  dismissRecordTime,
+} from '../graphql/chores';
 
 class TaskStore {
   isLoading: boolean = false;
@@ -18,7 +23,9 @@ class TaskStore {
       pageTitleIcon: observable,
       setPageTitle: action,
       startRecordTaskTime: action,
+      endRecordTaskTime: action,
       setRecordTaskTime: action,
+      dismissRecordTaskTime: action,
       rootStore: false,
     });
     this.rootStore = rootStore;
@@ -42,7 +49,6 @@ class TaskStore {
         },
       });
       const timeStart = startTimeResult?.data?.startRecordTaskTime;
-      console.log('Store startTime', timeStart);
 
       runInAction(() => {
         this.task.timeStart = timeStart;
@@ -63,7 +69,6 @@ class TaskStore {
         },
       });
       const timeEnd = endTimeResult?.data?.endRecordTaskTime;
-      console.log('Store startTime', timeEnd);
 
       runInAction(() => {
         this.task.timeEnd = timeEnd;
@@ -85,10 +90,30 @@ class TaskStore {
         },
       });
       const updatedRecordTime = setRecordTimeResult?.data?.setRecordTime;
-      console.log('Store startTime', updatedRecordTime);
 
       runInAction(() => {
         this.task.recordTime = updatedRecordTime;
+      });
+    } catch (err) {
+      console.log('setZonesQuickView failed', err);
+    }
+  };
+
+  dismissRecordTaskTime = async (taskId: number) => {
+    try {
+      const setRecordTimeResult = await client.mutate({
+        errorPolicy: 'all',
+        fetchPolicy: 'no-cache',
+        mutation: dismissRecordTime,
+        variables: {
+          dailyChoreId: taskId,
+        },
+      });
+
+      runInAction(() => {
+        this.task.recordTime = false;
+        this.task.timeStart = undefined;
+        this.task.timeEnd = undefined;
       });
     } catch (err) {
       console.log('setZonesQuickView failed', err);
