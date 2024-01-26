@@ -11,6 +11,7 @@ import TaskStore from '../stores/TaskStore';
 import {observer} from 'mobx-react';
 import appColors from '../styles/colors';
 import RecordTimeModal from '../components/modals/RecordTimeModal';
+import {millisecondsToTime} from '../util/timeUtils';
 
 interface TaskViewProps {
   route: object;
@@ -20,6 +21,11 @@ interface TaskViewProps {
 const TaskView: React.FC<TaskViewProps> = observer(({route, store}) => {
   const [descriptionOpen, setDescriptionOpen] = useState(false);
   const [isRecordTimeModalOpes, setIsRecordTimeModalOpen] = useState(false);
+
+  const timeStart = new Date(store?.task.timeStart);
+  const timeEnd = new Date(store?.task.timeEnd);
+
+  const timeDiff = timeEnd - timeStart;
 
   useEffect(() => {
     store.setPageTitle(
@@ -78,12 +84,26 @@ const TaskView: React.FC<TaskViewProps> = observer(({route, store}) => {
               ? store?.task?.choreData?.choreType?.averageChoreTime
               : 'No Record'}
           </Text>
+
           <TouchableOpacity
+            disabled={store?.task?.recordTime}
             onPress={() => setIsRecordTimeModalOpen(true)}
-            style={styles.recordTimeButtonContainer}>
-            <Text style={styles.recordTimeButtonText}>Record Time</Text>
+            style={
+              store?.task?.recordTime
+                ? styles.recordTimeButtonContainerDisabled
+                : styles.recordTimeButtonContainer
+            }>
+            <Text style={styles.recordTimeButtonText}>
+              {store?.task?.recordTime ? 'Recorded' : 'Record Time'}
+            </Text>
           </TouchableOpacity>
         </View>
+        {store?.task?.recordTime && (
+          <View style={styles.averageTimeContainer}>
+            <Text style={styles.averageTimeText}>Recorded Time:</Text>
+            <Text style={styles.timeText}>{millisecondsToTime(timeDiff)}</Text>
+          </View>
+        )}
       </View>
       <View style={styles.completeTaskButtonContainer}>
         <TouchableOpacity style={styles.completeTaskButton}>
@@ -177,6 +197,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     backgroundColor: appColors.buttonGreen,
+    borderRadius: 10,
+  },
+  recordTimeButtonContainerDisabled: {
+    marginLeft: 'auto',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: appColors.buttonGreen,
+    opacity: 0.5,
     borderRadius: 10,
   },
   recordTimeButtonText: {
