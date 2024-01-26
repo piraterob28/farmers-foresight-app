@@ -7,6 +7,7 @@ import {
   endTaskTime,
   setRecordTime,
   dismissRecordTime,
+  completeTaskMutation,
 } from '../graphql/chores';
 
 class TaskStore {
@@ -26,6 +27,7 @@ class TaskStore {
       endRecordTaskTime: action,
       setRecordTaskTime: action,
       dismissRecordTaskTime: action,
+      completeTask: action,
       rootStore: false,
     });
     this.rootStore = rootStore;
@@ -114,6 +116,31 @@ class TaskStore {
         this.task.recordTime = false;
         this.task.timeStart = undefined;
         this.task.timeEnd = undefined;
+      });
+    } catch (err) {
+      console.log('setZonesQuickView failed', err);
+    }
+  };
+
+  completeTask = async (taskId: number, notes: string | undefined) => {
+    try {
+      const completeTaskResult = await client.mutate({
+        errorPolicy: 'all',
+        fetchPolicy: 'no-cache',
+        mutation: completeTaskMutation,
+        variables: {
+          dailyChoreId: taskId,
+          notes: notes,
+        },
+      });
+      const updatedCompleted = completeTaskResult?.data?.completeTask;
+
+      runInAction(() => {
+        this.task.completed = updatedCompleted;
+        this.rootStore.taskListStore.choreData =
+          this.rootStore.taskListStore.choreData.filter(
+            chore => chore.id !== taskId,
+          );
       });
     } catch (err) {
       console.log('setZonesQuickView failed', err);

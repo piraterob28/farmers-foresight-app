@@ -85,10 +85,19 @@ const dismissRecordTime:
   }
 `;
 
+const completeTaskMutation:
+  | DocumentNode
+  | TypedDocumentNode<any, OperationVariables> = gql`
+  mutation completeTask($dailyChoreId: Int!, $notes: String) {
+    completeTask(dailyChoreId: $dailyChoreId, notes: $notes)
+  }
+`;
+
 export {
   getChoreListOneZone,
   startTaskTime,
   endTaskTime,
   setRecordTime,
   dismissRecordTime,
+  completeTaskMutation,
 };

@@ -11,108 +11,125 @@ import TaskStore from '../stores/TaskStore';
 import {observer} from 'mobx-react';
 import appColors from '../styles/colors';
 import RecordTimeModal from '../components/modals/RecordTimeModal';
+import CompleteTaskModal from '../components/modals/CompleteTaskModal';
 import {millisecondsToTime} from '../util/timeUtils';
 
 interface TaskViewProps {
   route: object;
   store: TaskStore;
+  navigation: object;
 }
 
-const TaskView: React.FC<TaskViewProps> = observer(({route, store}) => {
-  const [descriptionOpen, setDescriptionOpen] = useState(false);
-  const [isRecordTimeModalOpes, setIsRecordTimeModalOpen] = useState(false);
+const TaskView: React.FC<TaskViewProps> = observer(
+  ({route, navigation, store}) => {
+    const [descriptionOpen, setDescriptionOpen] = useState(false);
+    const [isRecordTimeModalOpes, setIsRecordTimeModalOpen] = useState(false);
+    const [isCompleteTaskModalOpen, setIsCompleteTaskModalOpen] =
+      useState(false);
 
-  const timeStart = new Date(store?.task.timeStart);
-  const timeEnd = new Date(store?.task.timeEnd);
+    const timeStart = new Date(store?.task.timeStart);
+    const timeEnd = new Date(store?.task.timeEnd);
 
-  const timeDiff = timeEnd - timeStart;
+    const timeDiff = timeEnd - timeStart;
 
-  useEffect(() => {
-    store.setPageTitle(
-      (title = route?.params?.pageTitle),
-      (icon = route?.params?.pageTitleIcon),
-    );
-  }, [route.params, store]);
-  return (
-    <ScrollView style={styles.taskViewContainer}>
-      <RecordTimeModal
-        isVisible={isRecordTimeModalOpes}
-        onClose={setIsRecordTimeModalOpen}
-        onTimeStart={store.startRecordTaskTime}
-        onTimeStop={store.endRecordTaskTime}
-        onRecordTime={store.setRecordTaskTime}
-        onDismissTime={store.dismissRecordTaskTime}
-        task={store?.task}
-      />
-      <View style={styles.taskTitleContainer}>
-        <Text style={styles.titleText}>
-          Zone {store?.task?.choreData?.zoneNumber} : Row{' '}
-          {store?.task?.choreData?.rowNumber}
-        </Text>
-        <Text style={styles.taskNameText}>
-          {store?.task?.choreData?.choreType?.name}
-        </Text>
-      </View>
-      <View style={styles.taskToolContainer}>
-        <Text style={styles.taskToolTitleText}>Tools:</Text>
-        <Text style={styles.taskToolText}>* Needs Plumbing through</Text>
-      </View>
-      <View style={styles.taskDescriptionContainer}>
-        <Text style={styles.taskDescriptionTitleText}>Description:</Text>
-        <Text
-          numberOfLines={descriptionOpen ? 100 : 3}
-          style={styles.taskDescriptionText}>
-          {store?.task?.choreData?.choreType?.description}
-        </Text>
-        {store?.task?.choreData?.choreType?.description?.length >= 130 && (
-          <TouchableOpacity
-            hitSlop={{top: 5, bottom: 5, left: 5, right: 5}}
-            style={styles.readMoreContainer}
-            onPress={() => setDescriptionOpen(!descriptionOpen)}>
-            <Text style={styles.readMoreText}>
-              {descriptionOpen ? 'Read Less' : 'Read More'}
-            </Text>
-          </TouchableOpacity>
-        )}
-      </View>
-      <View style={styles.timeContainer}>
-        <Text style={styles.timeTitleText}>Time:</Text>
-        <View style={styles.averageTimeContainer}>
-          <Text style={styles.averageTimeText}>Average Time:</Text>
-          <Text style={styles.timeText}>
-            {store?.task?.choreData?.choreType?.averageChoreTime
-              ? store?.task?.choreData?.choreType?.averageChoreTime
-              : 'No Record'}
+    useEffect(() => {
+      store.setPageTitle(
+        (title = route?.params?.pageTitle),
+        (icon = route?.params?.pageTitleIcon),
+      );
+    }, [route.params, store]);
+    return (
+      <ScrollView style={styles.taskViewContainer}>
+        <RecordTimeModal
+          isVisible={isRecordTimeModalOpes}
+          onClose={setIsRecordTimeModalOpen}
+          onTimeStart={store.startRecordTaskTime}
+          onTimeStop={store.endRecordTaskTime}
+          onRecordTime={store.setRecordTaskTime}
+          onDismissTime={store.dismissRecordTaskTime}
+          task={store?.task}
+        />
+        <CompleteTaskModal
+          isVisible={isCompleteTaskModalOpen}
+          onClose={setIsCompleteTaskModalOpen}
+          onComplete={store.completeTask}
+          task={store?.task}
+          navigation={navigation}
+        />
+        <View style={styles.taskTitleContainer}>
+          <Text style={styles.titleText}>
+            Zone {store?.task?.choreData?.zoneNumber} : Row{' '}
+            {store?.task?.choreData?.rowNumber}
           </Text>
-
-          <TouchableOpacity
-            disabled={store?.task?.recordTime}
-            onPress={() => setIsRecordTimeModalOpen(true)}
-            style={
-              store?.task?.recordTime
-                ? styles.recordTimeButtonContainerDisabled
-                : styles.recordTimeButtonContainer
-            }>
-            <Text style={styles.recordTimeButtonText}>
-              {store?.task?.recordTime ? 'Recorded' : 'Record Time'}
+          <Text style={styles.taskNameText}>
+            {store?.task?.choreData?.choreType?.name}
+          </Text>
+        </View>
+        <View style={styles.taskToolContainer}>
+          <Text style={styles.taskToolTitleText}>Tools:</Text>
+          <Text style={styles.taskToolText}>* Needs Plumbing through</Text>
+        </View>
+        <View style={styles.taskDescriptionContainer}>
+          <Text style={styles.taskDescriptionTitleText}>Description:</Text>
+          <Text
+            numberOfLines={descriptionOpen ? 100 : 3}
+            style={styles.taskDescriptionText}>
+            {store?.task?.choreData?.choreType?.description}
+          </Text>
+          {store?.task?.choreData?.choreType?.description?.length >= 130 && (
+            <TouchableOpacity
+              hitSlop={{top: 5, bottom: 5, left: 5, right: 5}}
+              style={styles.readMoreContainer}
+              onPress={() => setDescriptionOpen(!descriptionOpen)}>
+              <Text style={styles.readMoreText}>
+                {descriptionOpen ? 'Read Less' : 'Read More'}
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
+        <View style={styles.timeContainer}>
+          <Text style={styles.timeTitleText}>Time:</Text>
+          <View style={styles.averageTimeContainer}>
+            <Text style={styles.averageTimeText}>Average Time:</Text>
+            <Text style={styles.timeText}>
+              {store?.task?.choreData?.choreType?.averageChoreTime
+                ? store?.task?.choreData?.choreType?.averageChoreTime
+                : 'No Record'}
             </Text>
+
+            <TouchableOpacity
+              disabled={store?.task?.recordTime}
+              onPress={() => setIsRecordTimeModalOpen(true)}
+              style={
+                store?.task?.recordTime
+                  ? styles.recordTimeButtonContainerDisabled
+                  : styles.recordTimeButtonContainer
+              }>
+              <Text style={styles.recordTimeButtonText}>
+                {store?.task?.recordTime ? 'Recorded' : 'Record Time'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {store?.task?.recordTime && (
+            <View style={styles.averageTimeContainer}>
+              <Text style={styles.averageTimeText}>Recorded Time:</Text>
+              <Text style={styles.timeText}>
+                {millisecondsToTime(timeDiff)}
+              </Text>
+            </View>
+          )}
+        </View>
+        <View style={styles.completeTaskButtonContainer}>
+          <TouchableOpacity
+            onPress={() => setIsCompleteTaskModalOpen(true)}
+            style={styles.completeTaskButton}>
+            <Text style={styles.completeTaskText}>Complete Task</Text>
           </TouchableOpacity>
         </View>
-        {store?.task?.recordTime && (
-          <View style={styles.averageTimeContainer}>
-            <Text style={styles.averageTimeText}>Recorded Time:</Text>
-            <Text style={styles.timeText}>{millisecondsToTime(timeDiff)}</Text>
-          </View>
-        )}
-      </View>
-      <View style={styles.completeTaskButtonContainer}>
-        <TouchableOpacity style={styles.completeTaskButton}>
-          <Text style={styles.completeTaskText}>Complete Task</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
-  );
-});
+      </ScrollView>
+    );
+  },
+);
 
 export default TaskView;
 

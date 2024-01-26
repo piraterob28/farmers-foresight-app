@@ -3,9 +3,6 @@ const millisecondsToTime = (milliseconds: number) => {
   let minutes = Math.floor(milliseconds / 60000).toString();
   let seconds = Math.floor(milliseconds / 1000).toString();
 
-  if (hours.length <= 1) {
-    hours = '0' + hours;
-  }
   if (minutes.length <= 1) {
     minutes = '0' + minutes;
   }
