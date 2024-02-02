@@ -47,6 +47,14 @@ const getChoreListOneZone:
           name
           toolIds
           updatedAt
+          tools {
+            id
+            name
+            description
+            active
+            insertedAt
+            useGuide
+          }
         }
       }
     }

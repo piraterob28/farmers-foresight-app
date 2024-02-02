@@ -67,7 +67,14 @@ const TaskView: React.FC<TaskViewProps> = observer(
         </View>
         <View style={styles.taskToolContainer}>
           <Text style={styles.taskToolTitleText}>Tools:</Text>
-          <Text style={styles.taskToolText}>* Needs Plumbing through</Text>
+          {!!store?.task?.choreData?.choreType?.tools?.length &&
+          store?.task?.choreData?.choreType?.tools?.length > 0 ? (
+            store?.task?.choreData?.choreType?.tools?.map((tool, index) => (
+              <Text style={styles.taskToolText}>- {tool.name}</Text>
+            ))
+          ) : (
+            <Text style={styles.taskToolText}>- No tools Needed</Text>
+          )}
         </View>
         <View style={styles.taskDescriptionContainer}>
           <Text style={styles.taskDescriptionTitleText}>Description:</Text>
@@ -159,6 +166,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   taskToolText: {
+    paddingHorizontal: 10,
     fontSize: 14,
     color: appColors.darkGreen,
   },
