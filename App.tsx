@@ -7,6 +7,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import FarmMapQuickView from './app/views/FarmMapQuickView';
 import FarmTaskListView from './app/views/FarmTaskListView';
 import TaskView from './app/views/TaskView';
+import TaskAdminView from './app/views/TaskAdminView';
 import TaskListView from './app/views/TaskListView';
 import ZoneView from './app/views/ZoneView';
 import ZoneListView from './app/views/ZoneListView';
@@ -23,6 +24,8 @@ import {observer} from 'mobx-react';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
+
+// Bottom Tabs in Home Nav
 
 function HomeTabNav(): React.JSX.Element {
   return (
@@ -58,6 +61,8 @@ function HomeTabNav(): React.JSX.Element {
     </Tab.Navigator>
   );
 }
+
+// Map Quick View Stack
 
 const HomeMapStackNavigator = observer((): React.JSX.Element => {
   const stores = useStore();
@@ -107,6 +112,8 @@ const HomeMapStackNavigator = observer((): React.JSX.Element => {
   );
 });
 
+// Home Drawer Item
+
 const HomeListStackNavigator = (): React.JSX.Element => {
   const stores = useStore();
   return (
@@ -133,6 +140,35 @@ const HomeListStackNavigator = (): React.JSX.Element => {
     </Stack.Navigator>
   );
 };
+
+// Task Admin Drawer Stack
+
+const TaskAdminStackNavigator = (): React.JSX.Element => {
+  return (
+    <Stack.Navigator
+      screenOptions={
+        {
+          // headerShown: false,
+        }
+      }>
+      <Stack.Screen
+        name="Task Admin View"
+        options={{
+          headerStyle: {
+            backgroundColor: '#ffffff',
+          },
+          headerTintColor: appColors.darkGreen,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}>
+        {props => <TaskAdminView text={'Hello ZonelistView'} {...props} />}
+      </Stack.Screen>
+    </Stack.Navigator>
+  );
+};
+
+// Zone Admin Drawer Stack
 
 const ZoneStackNavigator = (): React.JSX.Element => {
   return (
@@ -172,6 +208,8 @@ const ZoneStackNavigator = (): React.JSX.Element => {
   );
 };
 
+// Drawer
+
 const Root = observer(() => {
   return (
     <Drawer.Navigator
@@ -183,6 +221,7 @@ const Root = observer(() => {
         component={HomeTabNav}
         options={{swipeEnabled: !store.farmMapQuickStore.isEditMode}}
       />
+      <Drawer.Screen name="Tasks" component={TaskAdminStackNavigator} />
       <Drawer.Screen name="Zones" component={ZoneStackNavigator} />
     </Drawer.Navigator>
   );
